@@ -1,6 +1,7 @@
 import Center from "components/Center";
 import InputField from "components/InputField";
-import { useState } from "react";
+import { usersAx } from "config/axios-config";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
@@ -29,10 +30,10 @@ const CreateUser = () => {
         register,
         handleSubmit,
         formState: { errors },
-        getValues,
     } = useForm();
 
     const [isCompany, setIsCompany] = useState(false);
+    const [jobs, setJobs] = useState([]);
 
     const handleCreateUser = (data) => {
         console.log(data);
@@ -41,6 +42,17 @@ const CreateUser = () => {
     const setEmpType = (e) => {
         setIsCompany(e.target.value === "شركة");
     };
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const { data } = await usersAx.getJobs();
+                setJobs(data);
+            } catch (err) {
+                console.log(err);
+            }
+        })();
+    });
 
     return (
         <Container maxWidth="xl" sx={{ py: 10 }}>
@@ -72,14 +84,14 @@ const CreateUser = () => {
                         fullWidth
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/* <Grid item xs={12} sm={6}>
                     <InputField
                         label="اسم المستخدم"
                         type="text"
                         {...register("username")}
                         fullWidth
                     />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} sm={6}>
                     <InputField
                         label="رقم الجوال"
@@ -127,7 +139,7 @@ const CreateUser = () => {
                     <FormControlLabel
                         label={
                             <Typography display={"inline"} variant="subtitle1">
-                                تفعيل
+                                فعال
                             </Typography>
                         }
                         control={<Checkbox {...register("isActive")} />}
@@ -154,7 +166,8 @@ const CreateUser = () => {
                 )}
                 <Grid item xs={6}>
                     <Autocomplete
-                        options={["مدير النظام", "مفتش"]}
+                        freeSolo
+                        options={jobs ? jobs.map((option) => option.StringValue) : ["جاري التحميل"]}
                         renderInput={(params) => (
                             <InputField
                                 label="الوظيفة"

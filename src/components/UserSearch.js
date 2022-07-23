@@ -12,11 +12,11 @@ const UserSearch = () => {
     } = useForm();
     const dispatch = useDispatch();
 
-    const handleSearch = (searchTerm) => {
+    const handleSearch = async (searchTerm) => {
         if (searchTerm.filterBy) {
             try {
                 dispatch(setPage(1));
-                const { data } = usersAx.getAll(searchTerm);
+                const { data } = await usersAx.getAllUsers(searchTerm);
                 console.log("searchResult", data);
                 dispatch(setUsers(data));
             } catch (err) {

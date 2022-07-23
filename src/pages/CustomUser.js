@@ -18,7 +18,7 @@ const CustomUser = () => {
         if (users.length === 0) {
             (async () => {
                 try {
-                    const { data } = await usersAx.getAll();
+                    const { data } = await usersAx.getAllUsers();
                     dispatch(setUsers(data));
                     console.log(data);
                 } catch (err) {
@@ -32,7 +32,7 @@ const CustomUser = () => {
     const handlePageChange = async (e, newPage) => {
         dispatch(setPage(newPage));
         try {
-            const { data } = await usersAx.getAll();
+            const { data } = await usersAx.getAllUsers();
             dispatch(setUsers(data));
             console.log(data);
         } catch (err) {
