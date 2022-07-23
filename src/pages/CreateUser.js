@@ -47,12 +47,15 @@ const CreateUser = () => {
         (async () => {
             try {
                 const { data } = await usersAx.getJobs();
+                const roles = await usersAx.getAllUsersRoles();
+                console.log("roles", roles);
+                console.log("data", data);
                 setJobs(data);
             } catch (err) {
                 console.log(err);
             }
         })();
-    });
+    }, []);
 
     return (
         <Container maxWidth="xl" sx={{ py: 10 }}>
@@ -84,14 +87,14 @@ const CreateUser = () => {
                         fullWidth
                     />
                 </Grid>
-                {/* <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6}>
                     <InputField
                         label="اسم المستخدم"
                         type="text"
                         {...register("username")}
                         fullWidth
                     />
-                </Grid> */}
+                </Grid>
                 <Grid item xs={12} sm={6}>
                     <InputField
                         label="رقم الجوال"
@@ -166,7 +169,6 @@ const CreateUser = () => {
                 )}
                 <Grid item xs={6}>
                     <Autocomplete
-                        freeSolo
                         options={jobs ? jobs.map((option) => option.StringValue) : ["جاري التحميل"]}
                         renderInput={(params) => (
                             <InputField

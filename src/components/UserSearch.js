@@ -6,10 +6,7 @@ import { useDispatch } from "react-redux";
 import { setLoading, setPage, setUsers } from "redux/slices/usersSlice";
 
 const UserSearch = () => {
-    const {
-        register,
-        handleSubmit,
-    } = useForm();
+    const { register, handleSubmit } = useForm();
     const dispatch = useDispatch();
 
     const handleSearch = async (searchTerm) => {

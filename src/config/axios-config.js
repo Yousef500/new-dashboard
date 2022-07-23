@@ -33,5 +33,6 @@ export const usersAx = {
     resetPass: (data) => ax.post("/Users/ResetUserPassword", data),
     create: (data) => ax.post("/Users/Add", data),
     edit: (data) => ax.post("/Users/Edit", data),
-    getJobs: () => ax.get("UserJobs/GetLookUpUserJobs"),
+    getJobs: () => ax.get("/UserJobs/GetLookUpUserJobs"),
+    getAllUsersRoles: () => ax.get("/Roles/GetLookUpSecurityRoles")
 };
