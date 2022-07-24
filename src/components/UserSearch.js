@@ -10,17 +10,15 @@ const UserSearch = () => {
     const dispatch = useDispatch();
 
     const handleSearch = async (searchTerm) => {
-        if (searchTerm.filterBy) {
-            try {
-                dispatch(setPage(1));
-                console.log(searchTerm)
-                const { data } = await usersAx.getAllUsers(searchTerm);
-                console.log("searchResult", data);
-                dispatch(setUsers(data));
-            } catch (err) {
-                console.error(err);
-                dispatch(setLoading(false));
-            }
+        try {
+            dispatch(setPage(1));
+            console.log(searchTerm);
+            const { data } = await usersAx.getAllUsers(searchTerm);
+            console.log("searchResult", data);
+            dispatch(setUsers(data));
+        } catch (err) {
+            console.error(err);
+            dispatch(setLoading(false));
         }
     };
 

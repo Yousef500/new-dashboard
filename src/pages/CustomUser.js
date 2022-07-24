@@ -1,5 +1,5 @@
 import { PersonAddOutlined } from "@mui/icons-material";
-import { Container, Grid, Pagination, Stack, Typography } from "@mui/material";
+import { CircularProgress, Container, Grid, Pagination, Stack, Typography } from "@mui/material";
 import MDButton from "components/MDButton";
 import UserSearch from "components/UserSearch";
 import { useEffect } from "react";
@@ -41,9 +41,7 @@ const CustomUser = () => {
         }
     };
 
-    return loading ? (
-        <Center>جاري التحميل...</Center>
-    ) : (
+    return (
         <Container maxWidth={"xl"} sx={{ py: 10 }}>
             <Grid container spacing={3} m={"auto"}>
                 <Grid item xs={12}>
@@ -66,11 +64,27 @@ const CustomUser = () => {
                 <Grid item xs={12}>
                     <UserSearch />
                 </Grid>
-                {users?.map((user) => (
-                    <Grid item xs={12} sm={10} md={6} lg={6} xl={4} key={user.Id} pb={2} m={"auto"}>
-                        <UserCard user={user} />
-                    </Grid>
-                ))}
+                {loading ? (
+                    <Center my={20}>
+                        <CircularProgress size={100} color="info" />
+                    </Center>
+                ) : (
+                    users?.map((user) => (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={10}
+                            md={6}
+                            lg={6}
+                            xl={4}
+                            key={user.Id}
+                            pb={2}
+                            m={"auto"}
+                        >
+                            <UserCard user={user} />
+                        </Grid>
+                    ))
+                )}
                 <Grid item xs={12}>
                     <Center>
                         <Pagination
