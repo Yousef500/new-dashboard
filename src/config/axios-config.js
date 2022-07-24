@@ -11,6 +11,7 @@ ax.interceptors.request.use(
         const state = store.getState();
         const authToken = state.currentUser.userInfo.Token;
         config.headers.Authorization = `bearer ${authToken}`;
+        config.headers["Accept-Language"] = "ar";
         if (config.url.includes("Search")) {
             const { page, pageSize } = state.users;
             const data = {
@@ -34,5 +35,6 @@ export const usersAx = {
     create: (data) => ax.post("/Users/Add", data),
     edit: (data) => ax.post("/Users/Edit", data),
     getJobs: () => ax.get("/UserJobs/GetLookUpUserJobs"),
-    getAllUsersRoles: () => ax.get("/Roles/GetLookUpSecurityRoles")
+    getAllUsersRoles: () => ax.get("/Roles/GetLookUpSecurityRoles"),
+    getUsersByJobId: (id) => ax.get(`/Users/GetLookUpUsersByJobId?securityUserJobId=${id}`),
 };

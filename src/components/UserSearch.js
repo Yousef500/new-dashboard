@@ -13,6 +13,7 @@ const UserSearch = () => {
         if (searchTerm.filterBy) {
             try {
                 dispatch(setPage(1));
+                console.log(searchTerm)
                 const { data } = await usersAx.getAllUsers(searchTerm);
                 console.log("searchResult", data);
                 dispatch(setUsers(data));

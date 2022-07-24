@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { FormHelperText, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 
 const InputField = styled(TextField)(() => ({
     "& .MuiFormHelperText-root": {
@@ -7,6 +7,9 @@ const InputField = styled(TextField)(() => ({
     },
     "& .MuiInputLabel-root": {
         fontSize: 18,
+    },
+    "& .MuiOutlinedInput-root": {
+        padding: 5,
     },
 }));
 

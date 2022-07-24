@@ -1,4 +1,5 @@
 import UserCardData from "./UserCardData";
+import UserCardStatus from "./UserCardStatus";
 
 const UserCardContent = ({ user }) => (
     <>
@@ -7,11 +8,7 @@ const UserCardContent = ({ user }) => (
         <UserCardData label="رقم الهوية:" data={user.NationalNumber} />
         <UserCardData label="البريد:" data={user.Email} />
         <UserCardData label="الرقم الوظيفي:" data={user.JobNumber} />
-        <UserCardData
-            label="الحالة:"
-            data={user.IsActive ? "فعال" : "غير فعال"}
-            dataProps={{ color: `${user.IsActive ? "green" : "error"}` }}
-        />
+        <UserCardStatus active={user.IsActive} />
         <UserCardData label="نوع الموظف:" data={user.IsCompany ? "شركة" : "رسمي"} />
         <UserCardData label="الوظيفة:" data={user.SecurityUserJobNameFl} />
     </>
