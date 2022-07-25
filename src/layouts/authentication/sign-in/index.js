@@ -50,14 +50,16 @@ function Basic() {
         register,
         formState: { errors },
         handleSubmit,
-    } = useForm();
+    } = useForm({
+        mode: "onTouched",
+    });
 
     const handleLogin = async (creds) => {
         setLoading(true);
         try {
             const { data } = await usersAx.login(creds);
             dispatch(setCurrentUser(data));
-            navigate("/dashboard");
+            navigate("/users");
         } catch (err) {
             console.error(err);
         }
@@ -115,7 +117,7 @@ function Basic() {
                         </MDBox>
                         <MDBox mb={2}>
                             <TextField
-                                type="text"
+                                type="password"
                                 label="كلمة المرور"
                                 fullWidth
                                 {...register("password", {

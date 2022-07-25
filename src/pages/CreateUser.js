@@ -1,3 +1,4 @@
+import { LoadingButton } from "@mui/lab";
 import {
     Checkbox,
     Container,
@@ -14,12 +15,15 @@ import JobsAutoComplete from "components/JobsAutoComplete";
 import ManagerAutoComplete from "components/ManagerAutoComplete";
 import MDButton from "components/MDButton";
 import RolesAutoComplete from "components/RolesAutoComplete";
+import { usersAx } from "config/axios-config";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CreateUser = () => {
     const [managers, setManagers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const {
         register,
@@ -35,9 +39,10 @@ const CreateUser = () => {
     const watchIsCompany = watch("isCompany");
     const watchJob = watch("job");
 
-    const handleCreateUser = (data) => {
-        const { confirmPassword, roles, job, manager, ...userData } = data;
-        if (confirmPassword === userData.password) {
+    const handleCreateUser = async (data) => {
+        setLoading(true);
+        try {
+            const { confirmPassword, roles, job, manager, ...userData } = data;
             const securityRolesList = roles.map((role) => role.Key);
             console.log({
                 ...userData,
@@ -46,7 +51,20 @@ const CreateUser = () => {
                 managerId: managers.length ? manager.Key : "",
                 companyName: userData.isCompany ? userData.companyName : "",
             });
+            const addUserRes = await usersAx.addUser({
+                ...userData,
+                securityRolesList,
+                securityUserJobId: job.Key,
+                managerId: managers.length ? manager.Key : "",
+                companyName: userData.isCompany ? userData.companyName : "",
+            });
+
+            console.log(addUserRes);
+            navigate("/users");
+        } catch (err) {
+            console.log({ err });
         }
+        setLoading(false)
     };
 
     return (
@@ -282,9 +300,15 @@ const CreateUser = () => {
 
                 <Grid item xs={12}>
                     <Stack direction="row" spacing={5} justifyContent="space-between">
-                        <MDButton color="success" type="submit" variant="gradient" fullWidth>
+                        <LoadingButton
+                            loading={loading}
+                            color="success"
+                            type="submit"
+                            variant="contained"
+                            fullWidth
+                        >
                             إضافة
-                        </MDButton>
+                        </LoadingButton>
 
                         <MDButton
                             component={Link}

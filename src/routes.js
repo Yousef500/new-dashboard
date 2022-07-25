@@ -59,14 +59,14 @@ const routes = [
         route: "/users",
         component: <CustomUser />,
     },
-    {
-      type: "collapse",
-      name: "Dashboard",
-      key: "dashboard",
-      icon: <Icon fontSize="small">dashboard</Icon>,
-      route: "/dashboard",
-      component: <Dashboard />,
-    },
+    // {
+    //   type: "collapse",
+    //   name: "Dashboard",
+    //   key: "dashboard",
+    //   icon: <Icon fontSize="small">dashboard</Icon>,
+    //   route: "/dashboard",
+    //   component: <Dashboard />,
+    // },
     // {
     //   type: "collapse",
     //   name: "Tables",
