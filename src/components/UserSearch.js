@@ -12,13 +12,12 @@ const UserSearch = () => {
     const handleSearch = async (searchTerm) => {
         try {
             dispatch(setPage(1));
-            console.log(searchTerm);
             const { data } = await usersAx.getAllUsers(searchTerm);
-            console.log("searchResult", data);
             dispatch(setUsers(data));
         } catch (err) {
             console.error(err);
-            dispatch(setLoading(false));
+            console.log(err.response.data);
+            dispatch(setUsers([]));
         }
     };
 

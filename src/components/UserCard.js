@@ -8,19 +8,16 @@ import UserCardDropdown from "./UserCardDropdown";
 const cardActions = [
     {
         title: "طباعة",
-        color: "primary",
+        color: "success",
         icon: <FileDownloadOutlined />,
+        variant: "contained",
     },
     {
         title: "تعديل",
-        color: "primary",
+        color: "success",
         icon: <EditOutlined />,
+        variant: "contained",
     },
-    // {
-    //     title: 'حذف',
-    //     color: 'error',
-    //     icon: <DeleteOutlined />,
-    // },
 ];
 
 const UserCard = ({ user }) => {

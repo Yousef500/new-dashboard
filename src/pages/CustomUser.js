@@ -69,6 +69,7 @@ const CustomUser = () => {
                         <CircularProgress size={100} color="info" />
                     </Center>
                 ) : (
+                    users?.length &&
                     users?.map((user) => (
                         <Grid
                             item

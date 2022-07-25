@@ -4,8 +4,9 @@ import {
     Divider,
     FormControlLabel,
     Grid,
+    Paper,
     Stack,
-    Typography
+    Typography,
 } from "@mui/material";
 import Center from "components/Center";
 import InputField from "components/InputField";
@@ -18,10 +19,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 const CreateUser = () => {
-    const [securityRolesList, setSecurityRolesList] = useState([]);
     const [managers, setManagers] = useState([]);
-    const [managerId, setManagerId] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
 
     const {
         register,
@@ -29,29 +27,35 @@ const CreateUser = () => {
         formState: { errors },
         watch,
         control,
+        setValue,
     } = useForm({
         mode: "onTouched",
     });
 
-    const isCompany = watch("isCompany");
+    const watchIsCompany = watch("isCompany");
+    const watchJob = watch("job");
 
     const handleCreateUser = (data) => {
-        console.log(confirmPassword);
-        console.log({
-            ...data,
-            securityRolesList,
-            securityUserJobId: data.securityUserJobId.Key,
-            companyName: isCompany ? data.companyName : "",
-            managerId: managers.length ? managerId : " ",
-        });
-    };
-
-    const handleConfirmPassword = (e) => {
-        setConfirmPassword(e.target.value);
+        const { confirmPassword, roles, job, manager, ...userData } = data;
+        if (confirmPassword === userData.password) {
+            const securityRolesList = roles.map((role) => role.Key);
+            console.log({
+                ...userData,
+                securityRolesList,
+                securityUserJobId: job.Key,
+                managerId: managers.length ? manager.Key : "",
+                companyName: userData.isCompany ? userData.companyName : "",
+            });
+        }
     };
 
     return (
-        <Container maxWidth="xl" sx={{ py: 10 }}>
+        <Container
+            component={Paper}
+            elevation={10}
+            maxWidth="xl"
+            sx={{ py: 10, my: 5, mx: "auto", borderRadius: 10 }}
+        >
             <Grid
                 container
                 spacing={{ xs: 1, sm: 2, lg: 3 }}
@@ -75,12 +79,12 @@ const CreateUser = () => {
 
                 <Grid item xs={12} sm={6}>
                     <InputField
+                        fullWidth
                         label="الإسم بالعربية *"
                         type="text"
                         {...register("nameFl", {
                             required: true,
                         })}
-                        fullWidth
                         error={!!errors.nameFl}
                         helperText={errors.nameFl?.message}
                     />
@@ -88,10 +92,10 @@ const CreateUser = () => {
 
                 <Grid item xs={12} sm={6}>
                     <InputField
+                        fullWidth
                         label="الإسم بالإنجليزية *"
                         type="text"
                         {...register("nameSl")}
-                        fullWidth
                         error={!!errors.nameSl}
                         helperText={errors.nameSl?.message}
                     />
@@ -99,12 +103,12 @@ const CreateUser = () => {
 
                 <Grid item xs={12} sm={6}>
                     <InputField
+                        fullWidth
                         label="رقم الجوال *"
                         type="number"
                         {...register("mobile", {
                             required: true,
                         })}
-                        fullWidth
                         error={!!errors.mobile}
                         helperText={errors.mobile?.message}
                     />
@@ -112,6 +116,7 @@ const CreateUser = () => {
 
                 <Grid item xs={12} sm={6}>
                     <InputField
+                        fullWidth
                         label="رقم الهوية *"
                         type="number"
                         {...register("nationalNumber", {
@@ -129,7 +134,6 @@ const CreateUser = () => {
                                 value: /^1|^2\d*/,
                             },
                         })}
-                        fullWidth
                         error={!!errors.nationalNumber}
                         helperText={errors.nationalNumber?.message}
                     />
@@ -137,12 +141,12 @@ const CreateUser = () => {
 
                 <Grid item xs={12} sm={6}>
                     <InputField
+                        fullWidth
                         label="البريد الالكتروني *"
                         type="email"
                         {...register("email", {
                             required: true,
                         })}
-                        fullWidth
                         error={!!errors.email}
                         helperText={errors.email?.message}
                     />
@@ -150,6 +154,7 @@ const CreateUser = () => {
 
                 <Grid item xs={12} sm={6}>
                     <InputField
+                        fullWidth
                         label="الرقم الوظيفي"
                         type="number"
                         {...register("jobNumber", {
@@ -162,24 +167,31 @@ const CreateUser = () => {
                                 value: 12,
                             },
                         })}
-                        fullWidth
                         error={!!errors.jobNumber}
                         helperText={errors.jobNumber?.message}
                     />
                 </Grid>
 
                 <Grid item xs={6}>
-                    {/* setJobId={setJobId} setManagers={setManagers} */}
                     <JobsAutoComplete control={control} setManagers={setManagers} />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <RolesAutoComplete setSecurityRolesList={setSecurityRolesList} />
+                    <RolesAutoComplete control={control} />
                 </Grid>
 
-                <Grid item xs={6} display={!managers.length && "none"}>
-                    <ManagerAutoComplete managers={managers} setManagerId={setManagerId} />
-                </Grid>
+                {managers.length ? (
+                    <Grid item xs={6}>
+                        <ManagerAutoComplete
+                            managers={managers}
+                            control={control}
+                            watchJob={watchJob}
+                            setValue={setValue}
+                        />
+                    </Grid>
+                ) : (
+                    ""
+                )}
 
                 <Grid item xs={4} sm={2} md={2} lg={1}>
                     <FormControlLabel
@@ -198,19 +210,19 @@ const CreateUser = () => {
                     <FormControlLabel
                         label={
                             <Typography display="inline" variant="subtitle1">
-                                شركة ؟
+                                حساب شركة ؟
                             </Typography>
                         }
                         control={<Checkbox {...register("isCompany")} />}
                     />
                 </Grid>
 
-                <Grid item xs={6} display={!isCompany && "none"}>
+                <Grid item xs={6} display={!watchIsCompany && "none"}>
                     <InputField
+                        fullWidth
                         label="اسم الشركة"
                         type="text"
                         {...register("companyName")}
-                        fullWidth
                     />
                 </Grid>
 
@@ -224,12 +236,12 @@ const CreateUser = () => {
 
                 <Grid item xs={12} sm={6}>
                     <InputField
+                        fullWidth
                         label="اسم المستخدم *"
                         type="text"
                         {...register("username", {
                             required: true,
                         })}
-                        fullWidth
                         error={!!errors.username}
                         helperText={errors.username?.message}
                     />
@@ -237,12 +249,12 @@ const CreateUser = () => {
 
                 <Grid item xs={12} sm={6}>
                     <InputField
+                        fullWidth
                         label="كلمة المرور *"
                         type="password"
                         {...register("password", {
                             required: true,
                         })}
-                        fullWidth
                         error={!!errors.password}
                         helperText={errors.password?.message}
                     />
@@ -250,10 +262,17 @@ const CreateUser = () => {
 
                 <Grid item xs={12} sm={6}>
                     <InputField
+                        fullWidth
                         label="تأكيد كلمة المرور *"
                         type="password"
-                        fullWidth
-                        onChange={handleConfirmPassword}
+                        {...register("confirmPassword", {
+                            required: true,
+                            validate: (val) => {
+                                return val === watch("password") || "لا يتطابق مع كلمة المرور";
+                            },
+                        })}
+                        error={!!errors.confirmPassword}
+                        helperText={errors.confirmPassword?.message}
                     />
                 </Grid>
 

@@ -69,7 +69,7 @@ const JobsAutoComplete = ({ control, setManagers, ...inputProps }) => {
                     )}
                 />
             )}
-            name="securityUserJobId"
+            name="job"
             control={control}
             rules={{ required: true }}
         />
