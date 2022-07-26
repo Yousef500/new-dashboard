@@ -7,9 +7,8 @@ import {
     Grid,
     Paper,
     Stack,
-    Typography,
+    Typography
 } from "@mui/material";
-import Center from "components/Center";
 import InputField from "components/InputField";
 import JobsAutoComplete from "components/JobsAutoComplete";
 import ManagerAutoComplete from "components/ManagerAutoComplete";
@@ -19,6 +18,7 @@ import { usersAx } from "config/axios-config";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CreateUser = () => {
     const [managers, setManagers] = useState([]);
@@ -61,8 +61,10 @@ const CreateUser = () => {
 
             console.log(addUserRes);
             navigate("/users");
+            toast.success("تم إضافة المستخدم بنجاح")
         } catch (err) {
             console.log({ err });
+            toast.error(err.response.data.Message ?? "لقد حدث خطأ ما");
         }
         setLoading(false);
     };

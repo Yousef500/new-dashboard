@@ -22,11 +22,6 @@ const RolesAutoComplete = ({ control }) => {
         })();
     }, []);
 
-    // const handleSecurityRoles = (e, securityRoles) => {
-    //     const ids = securityRoles.map((role) => role.Key);
-    //     setSecurityRolesList(ids);
-    // };
-
     return (
         <Controller
             render={({ field, fieldState: { error } }) => (
@@ -60,6 +55,7 @@ const RolesAutoComplete = ({ control }) => {
             )}
             control={control}
             name="roles"
+            rules={{ required: true }}
         />
     );
 };

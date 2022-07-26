@@ -4,6 +4,7 @@ import { Box, DialogActions, DialogContent, DialogTitle, Stack } from "@mui/mate
 import { usersAx } from "config/axios-config";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import Center from "./Center";
 import InputField from "./InputField";
 import MDButton from "./MDButton";
@@ -27,8 +28,10 @@ const PasswordResetDialog = ({ username, setDialogStatus }) => {
             const { data } = await usersAx.resetPassword({ username, newPassword });
             console.log({ data });
             setDialogStatus(false);
+            toast.success("تم تغيير كلمة المرور بنجاح");
         } catch (err) {
             console.log({ err });
+            toast.error(err.response?.data?.Message ?? "لقد حدث خطأ ما");
         }
         setLoading(false);
     };

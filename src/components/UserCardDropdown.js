@@ -9,6 +9,7 @@ import { Dialog, Fade, IconButton, Menu } from "@mui/material";
 import { usersAx } from "config/axios-config";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { setUsers, setUsersLoading } from "redux/slices/usersSlice";
 import DropdownItem from "./DropdownItem";
 import PasswordResetDialog from "./PasswordResetDialog";
@@ -40,9 +41,11 @@ const UserCardDropdown = ({ user }) => {
             console.log("data", data);
             const usersRes = await usersAx.getAllUsers();
             dispatch(setUsers(usersRes.data));
+            toast.success("تمت العملية بنجاح");
         } catch (err) {
             console.log({ err });
             dispatch(setUsersLoading(false));
+            toast.error(err.response?.data?.Message ?? "لقد حدث خطأ ما");
         }
     };
 

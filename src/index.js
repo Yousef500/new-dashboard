@@ -20,6 +20,7 @@ import { BrowserRouter } from "react-router-dom";
 // Material Dashboard 2 React Context Provider
 import { MaterialUIControllerProvider } from "context";
 import { Provider } from "react-redux";
+import "react-toastify/dist/ReactToastify.min.css";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
 
