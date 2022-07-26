@@ -160,7 +160,7 @@ export default function App() {
                                     ? brandDark
                                     : brandWhite
                             }
-                            brandName="Material Dashboard 2"
+                            brandName="E-Khadamat"
                             routes={routes}
                             onMouseEnter={handleOnMouseEnter}
                             onMouseLeave={handleOnMouseLeave}
@@ -173,7 +173,7 @@ export default function App() {
                 <Routes>
                     {getRoutes(routes)}
                     <Route path="/users/create" element={<CreateUser />} />
-                    <Route path="*" element={<Navigate to="/dashboard" />} />
+                    <Route path="*" element={<Navigate to="/users" />} />
                 </Routes>
             </ThemeProvider>
         </CacheProvider>

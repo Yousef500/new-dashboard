@@ -64,7 +64,7 @@ const CreateUser = () => {
         } catch (err) {
             console.log({ err });
         }
-        setLoading(false)
+        setLoading(false);
     };
 
     return (
@@ -82,11 +82,9 @@ const CreateUser = () => {
                 onSubmit={handleSubmit(handleCreateUser)}
             >
                 <Grid item xs={12}>
-                    <Center>
-                        <Typography variant="h1" gutterBottom>
-                            مستخدم جديد
-                        </Typography>
-                    </Center>
+                    <Typography variant="h1" gutterBottom align="center">
+                        مستخدم جديد
+                    </Typography>
                 </Grid>
 
                 <Grid item xs={12}>

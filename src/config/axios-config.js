@@ -41,4 +41,5 @@ export const usersAx = {
     addUser: (data) => ax.post("/Users/Add", data),
     changeStatus: ({ userId, status }) =>
         ax.post(`/Users/ChangeActivityStatus?userId=${userId}&isActive=${status}`),
+    resetPassword: (data) => ax.post("/Users/ResetUserPassword", data),
 };

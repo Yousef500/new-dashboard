@@ -8,30 +8,30 @@ const usersSlice = createSlice({
         page: 1,
         pageSize: 10,
         pageCount: 0,
-        loading: "idle",
+        usersLoading: "idle",
     },
     reducers: {
         setUsers: (state, action) => {
             const { PagedList, PageCount } = action.payload;
             state.users = PagedList;
             state.pageCount = PageCount;
-            state.loading = false;
+            state.usersLoading = false;
         },
         setPage: (state, action) => {
             state.page = action.payload;
-            state.loading = true;
+            state.usersLoading = true;
         },
-        setLoading: (state, action) => {
-            state.loading = action.payload;
+        setUsersLoading: (state, action) => {
+            state.usersLoading = action.payload;
         },
         setFilterBy: (state, action) => {
             state.page = 1;
-            state.loading = true;
+            state.usersLoading = true;
             state.filterBy = action.payload;
         },
     },
 });
 
-export const { setUsers, setPage, setLoading, setFilterBy } = usersSlice.actions;
+export const { setUsers, setPage, setUsersLoading, setFilterBy } = usersSlice.actions;
 
 export default usersSlice.reducer;

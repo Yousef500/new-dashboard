@@ -1,13 +1,21 @@
-import { Cancel, Check, EditRounded, MoreVertOutlined } from "@mui/icons-material";
-import { Fade, IconButton, Menu } from "@mui/material";
+import {
+    Cancel,
+    Check,
+    EditRounded,
+    MoreVertOutlined,
+    RotateLeftRounded
+} from "@mui/icons-material";
+import { Dialog, Fade, IconButton, Menu } from "@mui/material";
 import { usersAx } from "config/axios-config";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setLoading, setUsers } from "redux/slices/usersSlice";
+import { setUsers, setUsersLoading } from "redux/slices/usersSlice";
 import DropdownItem from "./DropdownItem";
+import PasswordResetDialog from "./PasswordResetDialog";
 
 const UserCardDropdown = ({ user }) => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [dialogStatus, setDialogStatus] = useState(false);
     const open = Boolean(anchorEl);
     const dispatch = useDispatch();
 
@@ -19,43 +27,24 @@ const UserCardDropdown = ({ user }) => {
         setAnchorEl(null);
     };
 
+    const handleDialogOpen = () => {
+        closeMenu();
+        setDialogStatus(true);
+    };
+
     const setUsersStatus = async (status) => {
         try {
             closeMenu();
-            dispatch(setLoading(true));
+            dispatch(setUsersLoading(true));
             const { data } = await usersAx.changeStatus({ userId: user.Id, status });
             console.log("data", data);
             const usersRes = await usersAx.getAllUsers();
             dispatch(setUsers(usersRes.data));
         } catch (err) {
             console.log({ err });
-            dispatch(setLoading(false));
+            dispatch(setUsersLoading(false));
         }
     };
-
-    // const handleDisableUser = async () => {
-    //     try {
-    //         closeMenu()
-    //         const { data } = await usersAx.changeStatus({ userId: user.Id, status: false });
-    //         console.log("data", data);
-    //         const usersRes = await usersAx.getAllUsers();
-    //         dispatch(setUsers(usersRes.data));
-    //     } catch (err) {
-    //         console.log({ err });
-    //     }
-    // };
-
-    // const handleEnableUser = async () => {
-    //     try {
-    //         closeMenu()
-    //         const { data } = await usersAx.changeStatus({ userId: user.Id, status: true });
-    //         console.log("data", data);
-    //         const usersRes = await usersAx.getAllUsers();
-    //         dispatch(setUsers(usersRes.data));
-    //     } catch (err) {
-    //         console.log({ err });
-    //     }
-    // };
 
     return (
         <>
@@ -74,6 +63,11 @@ const UserCardDropdown = ({ user }) => {
                 TransitionComponent={Fade}
             >
                 <DropdownItem label={"تعديل"} icon={<EditRounded />} onClick={closeMenu} />
+                <DropdownItem
+                    label={"إعادة تعيين كبمة المرور"}
+                    icon={<RotateLeftRounded />}
+                    onClick={handleDialogOpen}
+                />
                 {user.IsActive ? (
                     <DropdownItem
                         label={"إلغاء تفعيل"}
@@ -88,6 +82,14 @@ const UserCardDropdown = ({ user }) => {
                     />
                 )}
             </Menu>
+            {dialogStatus && (
+                <Dialog fullWidth open={dialogStatus} onClose={() => setDialogStatus(false)}>
+                    <PasswordResetDialog
+                        username={user.Username}
+                        setDialogStatus={setDialogStatus}
+                    />
+                </Dialog>
+            )}
         </>
     );
 };

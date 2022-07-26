@@ -5,14 +5,14 @@ import UserSearch from "components/UserSearch";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { setLoading, setPage, setUsers } from "redux/slices/usersSlice";
+import { setUsersLoading, setPage, setUsers } from "redux/slices/usersSlice";
 import Center from "../components/Center";
 import UserCard from "../components/UserCard";
 import { usersAx } from "../config/axios-config";
 
 const CustomUser = () => {
     const dispatch = useDispatch();
-    const { users, pageCount, page, loading } = useSelector((state) => state.users);
+    const { users, pageCount, page, usersLoading } = useSelector((state) => state.users);
 
     useEffect(() => {
         if (users.length === 0) {
@@ -23,7 +23,7 @@ const CustomUser = () => {
                     console.log(data);
                 } catch (err) {
                     console.log(err);
-                    dispatch(setLoading(false));
+                    dispatch(setUsersLoading(false));
                 }
             })();
         }
@@ -37,7 +37,7 @@ const CustomUser = () => {
             console.log(data);
         } catch (err) {
             console.log(err);
-            dispatch(setLoading(false));
+            dispatch(setUsersLoading(false));
         }
     };
 
@@ -64,7 +64,7 @@ const CustomUser = () => {
                 <Grid item xs={12}>
                     <UserSearch />
                 </Grid>
-                {loading ? (
+                {usersLoading ? (
                     <Center my={20}>
                         <CircularProgress size={100} color="info" />
                     </Center>
