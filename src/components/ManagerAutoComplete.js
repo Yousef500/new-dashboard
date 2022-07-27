@@ -3,10 +3,11 @@ import { useEffect } from "react";
 import { Controller } from "react-hook-form";
 import InputField from "./InputField";
 
-const ManagerAutoComplete = ({ managers, control, watchJob, setValue }) => {
-    useEffect(() => {
-        setValue("manager", null);
-    }, [watchJob]);
+const ManagerAutoComplete = ({ managers, control }) => {
+
+    // useEffect(() => {
+    //     setValue("manager", null);
+    // }, [watchJob]);
 
     return (
         <Controller

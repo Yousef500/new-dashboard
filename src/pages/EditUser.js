@@ -1,6 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import {
     Checkbox,
+    CircularProgress,
     Container,
     Divider,
     FormControlLabel,
@@ -9,21 +10,26 @@ import {
     Stack,
     Typography
 } from "@mui/material";
+import Center from "components/Center";
 import InputField from "components/InputField";
 import JobsAutoComplete from "components/JobsAutoComplete";
 import ManagerAutoComplete from "components/ManagerAutoComplete";
 import MDButton from "components/MDButton";
 import RolesAutoComplete from "components/RolesAutoComplete";
 import { usersAx } from "config/axios-config";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const CreateUser = () => {
+const EditUser = () => {
     const [managers, setManagers] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [defaultManager, setDefaultManager] = useState({});
+    // const [defaults, setDefaults] = useState({});
+    const [defaultsLoading, setDefaultsLoading] = useState(false);
     const navigate = useNavigate();
+    const { id } = useParams();
 
     const {
         register,
@@ -32,36 +38,89 @@ const CreateUser = () => {
         watch,
         control,
         setValue,
+        reset,
+        getValues,
     } = useForm({
         mode: "onTouched",
     });
 
-    const watchIsCompany = watch("isCompany");
-    const watchJob = watch("job");
+    const watchIsCompany = watch("IsCompany");
 
-    const handleCreateUser = async (data) => {
+    // const getDefaultManager = async (managerId) => {
+    //     setDefaultManager({ Key: data.PagedList[0].Id, StringValue: data.PagedList[0].NameFl });
+    // };
+
+    useEffect(() => {
+        (async () => {
+            setDefaultsLoading(true);
+            try {
+                console.log(id);
+                const { data } = await usersAx.searchUsers({ id });
+                const userData = data.PagedList[0];
+                const { data: managerData } = await usersAx.searchUsers({ id: userData.ManagerId });
+                // await getDefaultManager(userData.ManagerId);
+                console.log("defaultManager", managerData);
+                reset({
+                    ...userData,
+                    job: {
+                        Key: userData.SecurityUserJobId,
+                        StringValue: userData.SecurityUserJobName,
+                    },
+                    manager: {
+                        Key: managerData.PagedList[0].Id,
+                        StringValue: managerData.PagedList[0].NameFl,
+                    },
+                    roles: userData.SecurityRoleList.map((role) => ({
+                        Key: role.Id,
+                        StringValue: role.Name,
+                    })),
+                });
+                setDefaultsLoading(false);
+                console.log({ data });
+            } catch (err) {
+                console.log({ err });
+                setDefaultsLoading(false);
+            }
+        })();
+    }, []);
+
+    const handleEditUser = async (data) => {
         setLoading(true);
         try {
-            const { confirmPassword, roles, job, manager, ...userData } = data;
+            const { roles, job, manager, ...userData } = data;
             const securityRolesList = roles.map((role) => role.Key);
             console.log({
-                ...userData,
-                securityRolesList,
-                securityUserJobId: job.Key,
+                nationalNumber: userData.NationalNumber,
+                jobNumber: userData.JobNumber,
+                email: userData.Email,
+                mobile: userData.Mobile,
+                nameFl: userData.NameFl,
+                nameSl: userData.NameSl,
+                isActive: userData.IsActive,
+                companyName: userData.IsCompany ? userData.CompanyName : "",
+                isCompany: userData.IsCompany,
                 managerId: managers.length ? manager.Key : "",
-                companyName: userData.isCompany ? userData.companyName : "",
+                securityUserJobId: job.Key,
+                securityRolesList,
             });
-            const addUserRes = await usersAx.addUser({
-                ...userData,
-                securityRolesList,
-                securityUserJobId: job.Key,
+            const editUserRes = await usersAx.editUser({
+                nationalNumber: userData.NationalNumber,
+                jobNumber: userData.JobNumber,
+                email: userData.Email,
+                mobile: userData.Mobile,
+                nameFl: userData.NameFl,
+                nameSl: userData.NameSl,
+                isActive: userData.IsActive,
+                companyName: userData.IsCompany ? userData.CompanyName : "",
+                isCompany: userData.IsCompany,
                 managerId: managers.length ? manager.Key : "",
-                companyName: userData.isCompany ? userData.companyName : "",
+                securityUserJobId: job.Key,
+                securityRolesList,
             });
 
-            console.log(addUserRes);
+            console.log(editUserRes);
             navigate("/users");
-            toast.success("تم إضافة المستخدم بنجاح");
+            toast.success("تم تعديل المستخدم بنجاح");
         } catch (err) {
             console.log({ err });
             toast.error(err.response.data.Message ?? "لقد حدث خطأ ما");
@@ -69,7 +128,11 @@ const CreateUser = () => {
         setLoading(false);
     };
 
-    return (
+    return defaultsLoading ? (
+        <Center my={20}>
+            <CircularProgress size={100} />
+        </Center>
+    ) : (
         <Container
             component={Paper}
             elevation={10}
@@ -81,17 +144,11 @@ const CreateUser = () => {
                 spacing={{ xs: 1, sm: 2, lg: 3 }}
                 m="auto"
                 component="form"
-                onSubmit={handleSubmit(handleCreateUser)}
+                onSubmit={handleSubmit(handleEditUser)}
             >
                 <Grid item xs={12}>
                     <Typography variant="h1" gutterBottom align="center">
-                        مستخدم جديد
-                    </Typography>
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Typography variant="h3" gutterBottom>
-                        البيانات الشخصية
+                        تعديل بيانات مستخدم
                     </Typography>
                 </Grid>
 
@@ -100,11 +157,11 @@ const CreateUser = () => {
                         fullWidth
                         label="الإسم بالعربية *"
                         type="text"
-                        {...register("nameFl", {
+                        {...register("NameFl", {
                             required: true,
                         })}
-                        error={!!errors.nameFl}
-                        helperText={errors.nameFl?.message}
+                        error={!!errors.NameFl}
+                        helperText={errors.NameFl?.message}
                     />
                 </Grid>
 
@@ -113,9 +170,9 @@ const CreateUser = () => {
                         fullWidth
                         label="الإسم بالإنجليزية *"
                         type="text"
-                        {...register("nameSl")}
-                        error={!!errors.nameSl}
-                        helperText={errors.nameSl?.message}
+                        {...register("NameSl")}
+                        error={!!errors.NameSl}
+                        helperText={errors.NameSl?.message}
                     />
                 </Grid>
 
@@ -124,7 +181,7 @@ const CreateUser = () => {
                         fullWidth
                         label="رقم الجوال *"
                         type="number"
-                        {...register("mobile", {
+                        {...register("Mobile", {
                             required: true,
                             maxLength: {
                                 value: 12,
@@ -135,8 +192,8 @@ const CreateUser = () => {
                                 message: "رقم الجوال يتكون من 12 رقم",
                             },
                         })}
-                        error={!!errors.mobile}
-                        helperText={errors.mobile?.message}
+                        error={!!errors.Mobile}
+                        helperText={errors.Mobile?.message}
                     />
                 </Grid>
 
@@ -145,7 +202,7 @@ const CreateUser = () => {
                         fullWidth
                         label="رقم الهوية *"
                         type="number"
-                        {...register("nationalNumber", {
+                        {...register("NationalNumber", {
                             required: true,
                             maxLength: {
                                 message: "رقم الهوية يتكون من 10 أرقام",
@@ -160,8 +217,8 @@ const CreateUser = () => {
                                 value: /^1|^2\d*/,
                             },
                         })}
-                        error={!!errors.nationalNumber}
-                        helperText={errors.nationalNumber?.message}
+                        error={!!errors.NationalNumber}
+                        helperText={errors.NationalNumber?.message}
                     />
                 </Grid>
 
@@ -170,11 +227,11 @@ const CreateUser = () => {
                         fullWidth
                         label="البريد الالكتروني *"
                         type="email"
-                        {...register("email", {
+                        {...register("Email", {
                             required: true,
                         })}
-                        error={!!errors.email}
-                        helperText={errors.email?.message}
+                        error={!!errors.Email}
+                        helperText={errors.Email?.message}
                     />
                 </Grid>
 
@@ -183,7 +240,7 @@ const CreateUser = () => {
                         fullWidth
                         label="الرقم الوظيفي"
                         type="number"
-                        {...register("jobNumber", {
+                        {...register("JobNumber", {
                             maxLength: {
                                 message: "الرقم الوظيفي يتكون من 8 رقم",
                                 value: 8,
@@ -193,8 +250,8 @@ const CreateUser = () => {
                                 value: 8,
                             },
                         })}
-                        error={!!errors.jobNumber}
-                        helperText={errors.jobNumber?.message}
+                        error={!!errors.JobNumber}
+                        helperText={errors.JobNumber?.message}
                     />
                 </Grid>
 
@@ -202,6 +259,7 @@ const CreateUser = () => {
                     <JobsAutoComplete
                         control={control}
                         setManagers={setManagers}
+                        job={getValues("job")}
                         setValue={setValue}
                     />
                 </Grid>
@@ -221,7 +279,15 @@ const CreateUser = () => {
                                 فعال
                             </Typography>
                         }
-                        control={<Checkbox {...register("isActive")} />}
+                        control={
+                            <Controller
+                                name="IsActive"
+                                control={control}
+                                render={({ field }) => (
+                                    <Checkbox {...field} checked={field.value} />
+                                )}
+                            />
+                        }
                     />
                 </Grid>
 
@@ -234,7 +300,15 @@ const CreateUser = () => {
                                 حساب شركة ؟
                             </Typography>
                         }
-                        control={<Checkbox {...register("isCompany")} />}
+                        control={
+                            <Controller
+                                name="IsCompany"
+                                control={control}
+                                render={({ field }) => (
+                                    <Checkbox {...field} checked={field.value} />
+                                )}
+                            />
+                        }
                     />
                 </Grid>
 
@@ -243,57 +317,11 @@ const CreateUser = () => {
                         fullWidth
                         label="اسم الشركة"
                         type="text"
-                        {...register("companyName")}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Divider sx={{ background: "black" }} />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Typography variant="h3">بيانات الحساب</Typography>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                    <InputField
-                        fullWidth
-                        label="اسم المستخدم *"
-                        type="text"
-                        {...register("username", {
-                            required: true,
+                        {...register("CompanyName", {
+                            required: getValues("IsCompany"),
                         })}
-                        error={!!errors.username}
-                        helperText={errors.username?.message}
-                    />
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                    <InputField
-                        fullWidth
-                        label="كلمة المرور *"
-                        type="password"
-                        {...register("password", {
-                            required: true,
-                        })}
-                        error={!!errors.password}
-                        helperText={errors.password?.message}
-                    />
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                    <InputField
-                        fullWidth
-                        label="تأكيد كلمة المرور *"
-                        type="password"
-                        {...register("confirmPassword", {
-                            required: true,
-                            validate: (val) => {
-                                return val === watch("password") || "لا يتطابق مع كلمة المرور";
-                            },
-                        })}
-                        error={!!errors.confirmPassword}
-                        helperText={errors.confirmPassword?.message}
+                        error={!!errors.CompanyName}
+                        helperText={errors.CompanyName?.message}
                     />
                 </Grid>
 
@@ -310,7 +338,7 @@ const CreateUser = () => {
                             variant="contained"
                             fullWidth
                         >
-                            إضافة
+                            حفظ
                         </LoadingButton>
 
                         <MDButton
@@ -329,4 +357,4 @@ const CreateUser = () => {
     );
 };
 
-export default CreateUser;
+export default EditUser;

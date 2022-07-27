@@ -5,7 +5,7 @@ import UserSearch from "components/UserSearch";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { setUsersLoading, setPage, setUsers } from "redux/slices/usersSlice";
+import { setUsersLoading, setUsersPageNo, setUsers } from "redux/slices/usersSlice";
 import Center from "../components/Center";
 import UserCard from "../components/UserCard";
 import { usersAx } from "../config/axios-config";
@@ -18,7 +18,7 @@ const CustomUser = () => {
         if (users.length === 0) {
             (async () => {
                 try {
-                    const { data } = await usersAx.getAllUsers();
+                    const { data } = await usersAx.searchUsers();
                     dispatch(setUsers(data));
                     console.log(data);
                 } catch (err) {
@@ -30,9 +30,9 @@ const CustomUser = () => {
     }, []);
 
     const handlePageChange = async (e, newPage) => {
-        dispatch(setPage(newPage));
+        dispatch(setUsersPageNo(newPage));
         try {
-            const { data } = await usersAx.getAllUsers();
+            const { data } = await usersAx.searchUsers();
             dispatch(setUsers(data));
             console.log(data);
         } catch (err) {

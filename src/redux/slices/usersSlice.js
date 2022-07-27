@@ -17,21 +17,19 @@ const usersSlice = createSlice({
             state.pageCount = PageCount;
             state.usersLoading = false;
         },
-        setPage: (state, action) => {
+        setUsersPageNo: (state, action) => {
             state.page = action.payload;
             state.usersLoading = true;
         },
         setUsersLoading: (state, action) => {
             state.usersLoading = action.payload;
         },
-        setFilterBy: (state, action) => {
-            state.page = 1;
-            state.usersLoading = true;
+        setUsersFilterBy: (state, action) => {
             state.filterBy = action.payload;
         },
     },
 });
 
-export const { setUsers, setPage, setUsersLoading, setFilterBy } = usersSlice.actions;
+export const { setUsers, setUsersPageNo, setUsersLoading, setUsersFilterBy } = usersSlice.actions;
 
 export default usersSlice.reducer;

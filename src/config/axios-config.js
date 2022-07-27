@@ -31,10 +31,9 @@ ax.interceptors.request.use(
 export const usersAx = {
     login: ({ username, password }) =>
         ax.get(`/Users/GetLogin?username=${username}&password=${password}`),
-    getAllUsers: (data) => ax.post("/Users/Search", data),
+    searchUsers: (data) => ax.post("/Users/Search", data),
     resetPass: (data) => ax.post("/Users/ResetUserPassword", data),
-    create: (data) => ax.post("/Users/Add", data),
-    edit: (data) => ax.post("/Users/Edit", data),
+    editUser: (data) => ax.post("/Users/Edit", data),
     getJobs: () => ax.get("/UserJobs/GetLookUpUserJobs"),
     getAllUsersRoles: () => ax.get("/Roles/GetLookUpSecurityRoles"),
     getUsersByJobId: (id) => ax.get(`/Users/GetLookUpUsersByJobId?securityUserJobId=${id}`),

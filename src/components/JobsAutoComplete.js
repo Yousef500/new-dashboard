@@ -4,26 +4,15 @@ import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import InputField from "./InputField";
 
-const JobsAutoComplete = ({ control, setManagers, ...inputProps }) => {
+const JobsAutoComplete = ({ control, setManagers, job = {}, setValue, ...inputProps }) => {
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        (async () => {
-            setLoading(true);
-            try {
-                const { data } = await usersAx.getJobs();
-                console.log("data", data);
-                setJobs(data);
-            } catch (err) {
-                console.log(err);
-            }
-            setLoading(false);
-        })();
-    }, []);
-
-    const handleJobNameChange = async (e, field, val) => {
-        field.onChange(val);
+    const handleJobNameChange = async (e, field = null, val) => {
+        if (field) {
+            setValue("manager", null);
+        }
+        field?.onChange(val);
         let managers;
         switch (val.StringValue) {
             case "مفتش صحى":
@@ -40,6 +29,27 @@ const JobsAutoComplete = ({ control, setManagers, ...inputProps }) => {
         }
     };
 
+    useEffect(() => {
+        (async () => {
+            if (job) {
+                await handleJobNameChange({}, null, job);
+            }
+            setLoading(true);
+            try {
+                const { data } = await usersAx.getJobs();
+                console.log("data", data);
+                setJobs(data);
+            } catch (err) {
+                console.log(err);
+            }
+            setLoading(false);
+        })();
+        const abortController = new AbortController();
+        return () => {
+            abortController.abort();
+        };
+    }, []);
+
     return (
         <Controller
             render={({ field, fieldState: { error } }) => (
@@ -54,7 +64,7 @@ const JobsAutoComplete = ({ control, setManagers, ...inputProps }) => {
                         <InputField
                             error={!!error}
                             helperText={error?.message}
-                            label="الوظيفة"
+                            label="الوظيفة *"
                             {...params}
                             InputProps={{
                                 ...params.InputProps,
@@ -69,7 +79,7 @@ const JobsAutoComplete = ({ control, setManagers, ...inputProps }) => {
                     )}
                 />
             )}
-            name="job"
+            name={"job"}
             control={control}
             rules={{ required: true }}
         />

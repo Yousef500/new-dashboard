@@ -36,7 +36,7 @@ const RolesAutoComplete = ({ control }) => {
                     isOptionEqualToValue={(opt, val) => opt.Key === val.Key}
                     renderInput={(params) => (
                         <InputField
-                            label="الدور الوظيفي"
+                            label="الدور الوظيفي *"
                             {...params}
                             error={!!error}
                             helperText={error?.message}

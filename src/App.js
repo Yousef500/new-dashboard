@@ -53,6 +53,7 @@ import { setMiniSidenav, setOpenConfigurator, useMaterialUIController } from "co
 import brandDark from "assets/images/logo-ct-dark.png";
 import brandWhite from "assets/images/logo-ct.png";
 import CreateUser from "pages/CreateUser";
+import EditUser from "pages/EditUser";
 import { Slide, ToastContainer } from "react-toastify";
 
 export default function App() {
@@ -176,7 +177,8 @@ export default function App() {
                         <Routes>
                             {getRoutes(routes)}
                             <Route path="/users/create" element={<CreateUser />} />
-                            <Route path="*" element={<Navigate to="/users" />} />
+                            <Route path="/users/edit/:id" element={<EditUser />} />
+                            <Route path="*" element={<Navigate to="/sign-in" />} />
                         </Routes>
                     </ThemeProvider>
                 </CacheProvider>

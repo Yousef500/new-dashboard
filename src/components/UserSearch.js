@@ -1,9 +1,14 @@
 import { Search } from "@mui/icons-material";
-import { IconButton, InputBase, Paper, Stack } from "@mui/material";
+import { Divider, IconButton, InputBase, Paper, Stack } from "@mui/material";
 import { usersAx } from "config/axios-config";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { setFilterBy, setUsers } from "redux/slices/usersSlice";
+import {
+    setUsers,
+    setUsersFilterBy,
+    setUsersLoading,
+    setUsersPageNo,
+} from "redux/slices/usersSlice";
 
 const UserSearch = () => {
     const { register, handleSubmit } = useForm();
@@ -11,8 +16,10 @@ const UserSearch = () => {
 
     const handleSearch = async ({ filterBy }) => {
         try {
-            dispatch(setFilterBy(filterBy));
-            const { data } = await usersAx.getAllUsers();
+            dispatch(setUsersLoading(true));
+            dispatch(setUsersPageNo(1));
+            dispatch(setUsersFilterBy(filterBy));
+            const { data } = await usersAx.searchUsers();
             dispatch(setUsers(data));
         } catch (err) {
             console.error(err);

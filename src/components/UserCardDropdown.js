@@ -9,6 +9,7 @@ import { Dialog, Fade, IconButton, Menu } from "@mui/material";
 import { usersAx } from "config/axios-config";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setUsers, setUsersLoading } from "redux/slices/usersSlice";
 import DropdownItem from "./DropdownItem";
@@ -19,6 +20,7 @@ const UserCardDropdown = ({ user }) => {
     const [dialogStatus, setDialogStatus] = useState(false);
     const open = Boolean(anchorEl);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const openMenu = (e) => {
         setAnchorEl(e.currentTarget);
@@ -33,13 +35,18 @@ const UserCardDropdown = ({ user }) => {
         setDialogStatus(true);
     };
 
+    const navigateToEdit = () => {
+        closeMenu();
+        navigate(`/users/edit/${user.Id}`);
+    };
+
     const setUsersStatus = async (status) => {
         try {
             closeMenu();
             dispatch(setUsersLoading(true));
             const { data } = await usersAx.changeStatus({ userId: user.Id, status });
             console.log("data", data);
-            const usersRes = await usersAx.getAllUsers();
+            const usersRes = await usersAx.searchUsers();
             dispatch(setUsers(usersRes.data));
             toast.success("تمت العملية بنجاح");
         } catch (err) {
@@ -65,7 +72,7 @@ const UserCardDropdown = ({ user }) => {
                 }}
                 TransitionComponent={Fade}
             >
-                <DropdownItem label={"تعديل"} icon={<EditRounded />} onClick={closeMenu} />
+                <DropdownItem label={"تعديل"} icon={<EditRounded />} onClick={navigateToEdit} />
                 <DropdownItem
                     label={"إعادة تعيين كبمة المرور"}
                     icon={<RotateLeftRounded />}
