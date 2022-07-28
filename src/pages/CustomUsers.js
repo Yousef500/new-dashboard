@@ -1,16 +1,16 @@
 import { PersonAddOutlined } from "@mui/icons-material";
 import { CircularProgress, Container, Grid, Pagination, Stack, Typography } from "@mui/material";
-import MDButton from "components/MDButton";
-import UserSearch from "components/UserSearch";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { setUsersLoading, setUsersPageNo, setUsers } from "redux/slices/usersSlice";
-import Center from "../components/Center";
-import UserCard from "../components/UserCard";
+import { setUsers, setUsersLoading, setUsersPageNo } from "redux/slices/usersSlice";
+import Center from "../components/khadamat/Center";
+import UserCard from "../components/khadamat/UserCard";
+import UserSearch from "../components/khadamat/UserSearch";
+import MDButton from "../components/MDButton";
 import { usersAx } from "../config/axios-config";
 
-const CustomUser = () => {
+const CustomUsers = () => {
     const dispatch = useDispatch();
     const { users, pageCount, page, usersLoading } = useSelector((state) => state.users);
 
@@ -106,4 +106,4 @@ const CustomUser = () => {
     );
 };
 
-export default CustomUser;
+export default CustomUsers;

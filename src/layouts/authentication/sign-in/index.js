@@ -38,6 +38,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCurrentUser } from "redux/slices/currentUserSlice";
+import { toast } from "react-toastify";
 
 function Basic() {
     // const [rememberMe, setRememberMe] = useState(false);
@@ -59,9 +60,10 @@ function Basic() {
         try {
             const { data } = await usersAx.login(creds);
             dispatch(setCurrentUser(data));
-            navigate("/users");
+            navigate("/users-management");
         } catch (err) {
             console.error(err);
+            toast.error(err.response.data?.Message ?? "تأكد من صحة البيانات")
         }
         setLoading(false);
     };

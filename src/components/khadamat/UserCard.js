@@ -1,28 +1,22 @@
 import { EditOutlined, FileDownloadOutlined } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Card, CardActions, CardContent, CardHeader, Divider } from "@mui/material";
+import {
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    CircularProgress,
+    Divider,
+} from "@mui/material";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import MDButton from "../MDButton";
 import Center from "./Center";
-import MDButton from "./MDButton";
 import UserCardContent from "./UserCardContent";
 import UserCardDropdown from "./UserCardDropdown";
 
-const cardActions = [
-    {
-        title: "طباعة",
-        color: "success",
-        icon: <FileDownloadOutlined />,
-        variant: "contained",
-    },
-    {
-        title: "تعديل",
-        color: "success",
-        icon: <EditOutlined />,
-        variant: "contained",
-    },
-];
-
 const UserCard = ({ user }) => {
+    const [loading, setLoading] = useState(false);
     return (
         <Card
             sx={{
@@ -33,19 +27,25 @@ const UserCard = ({ user }) => {
                 pb: 2,
             }}
         >
-            <CardHeader
-                titleTypographyProps={{
-                    variant: "h3",
-                    align: "center",
-                    color: `${user.IsActive ? "green" : "inherit"}`,
-                    gutterBottom: true,
-                }}
-                title={user.NameFl}
-                action={<UserCardDropdown user={user} />}
-            />
+            {loading ? (
+                <Center my={2}>
+                    <CircularProgress color="info" size={50} />
+                </Center>
+            ) : (
+                <CardHeader
+                    titleTypographyProps={{
+                        variant: "h3",
+                        align: "center",
+                        color: `${user.IsActive ? "green" : "inherit"}`,
+                        gutterBottom: true,
+                    }}
+                    title={user.NameFl}
+                    action={<UserCardDropdown user={user} setUserLoading={setLoading} />}
+                />
+            )}
             <Divider />
             <CardContent>
-                <UserCardContent user={user} />
+                <UserCardContent user={user} loading={loading} />
             </CardContent>
             <CardActions>
                 <Center>

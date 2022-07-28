@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Center from "./Center";
 import InputField from "./InputField";
-import MDButton from "./MDButton";
+import MDButton from "../MDButton";
 
 const PasswordResetDialog = ({ username, setDialogStatus }) => {
     const [loading, setLoading] = useState(false);

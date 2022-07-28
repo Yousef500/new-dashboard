@@ -47,17 +47,26 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
-import CustomUser from "pages/CustomUser";
-import { SupervisedUserCircle } from "@mui/icons-material";
+import { ExitToApp, SupervisedUserCircle } from "@mui/icons-material";
+import UsersManagement from "pages/UsersManagement";
+import SignOut from "components/khadamat/SignOut";
 
 const routes = [
     {
         type: "collapse",
-        name: "إدارة المستخدمين",
-        key: "users",
+        name: "الحماية والمستخدمين",
+        key: "usersManagement",
         icon: <SupervisedUserCircle />,
-        route: "/users",
-        component: <CustomUser />,
+        route: "/users-management",
+        component: <UsersManagement />,
+    },
+    {
+        type: "collapse",
+        name: "تسجيل الخروج",
+        key: "signOut",
+        icon: <ExitToApp />,
+        route: "/signout",
+        component: <SignOut />,
     },
     // {
     //   type: "collapse",
@@ -107,14 +116,14 @@ const routes = [
     //   route: "/profile",
     //   component: <Profile />,
     // },
-    {
-      type: "collapse",
-      name: "تسجيل الدخول",
-      key: "sign-in",
-      icon: <Icon fontSize="small">login</Icon>,
-      route: "/sign-in",
-      component: <SignIn />,
-    },
+    // {
+    //     type: "collapse",
+    //     name: "تسجيل الدخول",
+    //     key: "sign-in",
+    //     icon: <Icon fontSize="small">login</Icon>,
+    //     route: "/sign-in",
+    //     component: <SignIn />,
+    // },
     // {
     //   type: "collapse",
     //   name: "Sign Up",

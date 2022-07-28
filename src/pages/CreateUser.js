@@ -9,11 +9,11 @@ import {
     Stack,
     Typography
 } from "@mui/material";
-import InputField from "components/InputField";
-import JobsAutoComplete from "components/JobsAutoComplete";
-import ManagerAutoComplete from "components/ManagerAutoComplete";
+import InputField from "components/khadamat/InputField";
+import JobsAutoComplete from "components/khadamat/JobsAutoComplete";
+import ManagerAutoComplete from "components/khadamat/ManagerAutoComplete";
 import MDButton from "components/MDButton";
-import RolesAutoComplete from "components/RolesAutoComplete";
+import RolesAutoComplete from "components/khadamat/RolesAutoComplete";
 import { usersAx } from "config/axios-config";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

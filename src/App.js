@@ -52,8 +52,12 @@ import { setMiniSidenav, setOpenConfigurator, useMaterialUIController } from "co
 // Images
 import brandDark from "assets/images/logo-ct-dark.png";
 import brandWhite from "assets/images/logo-ct.png";
+import ProtectedRoute from "components/khadamat/ProtectedRoute";
+import SignIn from "layouts/authentication/sign-in";
 import CreateUser from "pages/CreateUser";
+import CustomUsers from "pages/CustomUsers";
 import EditUser from "pages/EditUser";
+import { useSelector } from "react-redux";
 import { Slide, ToastContainer } from "react-toastify";
 
 export default function App() {
@@ -71,6 +75,7 @@ export default function App() {
     const [onMouseEnter, setOnMouseEnter] = useState(false);
     const [rtlCache, setRtlCache] = useState(null);
     const { pathname } = useLocation();
+    const { userInfo } = useSelector((state) => state.currentUser);
 
     // Cache for the rtl
     useMemo(() => {
@@ -175,9 +180,13 @@ export default function App() {
                         )}
                         {layout === "vr" && <Configurator />}
                         <Routes>
-                            {getRoutes(routes)}
-                            <Route path="/users/create" element={<CreateUser />} />
-                            <Route path="/users/edit/:id" element={<EditUser />} />
+                            <Route element={<ProtectedRoute allowed={!!userInfo?.Token} />}>
+                                {getRoutes(routes)}
+                                <Route path="/users" element={<CustomUsers />} />  
+                                <Route path="/users/create" element={<CreateUser />} />
+                                <Route path="/users/edit/:id" element={<EditUser />} />
+                            </Route>
+                            <Route path="/sign-in" element={<SignIn />} />
                             <Route path="*" element={<Navigate to="/sign-in" />} />
                         </Routes>
                     </ThemeProvider>

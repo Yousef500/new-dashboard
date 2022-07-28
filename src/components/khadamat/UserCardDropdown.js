@@ -3,7 +3,7 @@ import {
     Check,
     EditRounded,
     MoreVertOutlined,
-    RotateLeftRounded
+    RotateLeftRounded,
 } from "@mui/icons-material";
 import { Dialog, Fade, IconButton, Menu } from "@mui/material";
 import { usersAx } from "config/axios-config";
@@ -15,7 +15,7 @@ import { setUsers, setUsersLoading } from "redux/slices/usersSlice";
 import DropdownItem from "./DropdownItem";
 import PasswordResetDialog from "./PasswordResetDialog";
 
-const UserCardDropdown = ({ user }) => {
+const UserCardDropdown = ({ user, setUserLoading }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [dialogStatus, setDialogStatus] = useState(false);
     const open = Boolean(anchorEl);
@@ -41,9 +41,10 @@ const UserCardDropdown = ({ user }) => {
     };
 
     const setUsersStatus = async (status) => {
+        setUserLoading(true);
         try {
             closeMenu();
-            dispatch(setUsersLoading(true));
+            // dispatch(setUsersLoading(true));
             const { data } = await usersAx.changeStatus({ userId: user.Id, status });
             console.log("data", data);
             const usersRes = await usersAx.searchUsers();
@@ -51,9 +52,10 @@ const UserCardDropdown = ({ user }) => {
             toast.success("تمت العملية بنجاح");
         } catch (err) {
             console.log({ err });
-            dispatch(setUsersLoading(false));
+            // dispatch(setUsersLoading(false));
             toast.error(err.response?.data?.Message ?? "لقد حدث خطأ ما");
         }
+        setUserLoading(false);
     };
 
     return (
