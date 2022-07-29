@@ -5,7 +5,7 @@ import {
     MoreVertOutlined,
     RotateLeftRounded,
 } from "@mui/icons-material";
-import { Dialog, Fade, IconButton, Menu } from "@mui/material";
+import { CircularProgress, Dialog, Fade, IconButton, Menu } from "@mui/material";
 import { usersAx } from "config/axios-config";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -15,7 +15,7 @@ import { setUsers, setUsersLoading } from "redux/slices/usersSlice";
 import DropdownItem from "./DropdownItem";
 import PasswordResetDialog from "./PasswordResetDialog";
 
-const UserCardDropdown = ({ user, setUserLoading }) => {
+const UserCardDropdown = ({ user, loading, setUserLoading }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [dialogStatus, setDialogStatus] = useState(false);
     const open = Boolean(anchorEl);
@@ -80,7 +80,9 @@ const UserCardDropdown = ({ user, setUserLoading }) => {
                     icon={<RotateLeftRounded />}
                     onClick={handleDialogOpen}
                 />
-                {user.IsActive ? (
+                {loading ? (
+                    <DropdownItem label={"جاري التحميل"} icon={<CircularProgress size={12} />} />
+                ) : user.IsActive ? (
                     <DropdownItem
                         label={"إلغاء تفعيل"}
                         icon={<Cancel />}

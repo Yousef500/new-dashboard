@@ -35,6 +35,7 @@ import {
 
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
+import { Accordion } from "@mui/material";
 
 function SidenavCollapse({ icon, name, active, ...rest }) {
   const [controller] = useMaterialUIController();

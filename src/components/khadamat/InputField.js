@@ -7,6 +7,7 @@ const InputField = styled(TextField)(() => ({
     },
     "& .MuiInputLabel-root": {
         fontSize: 18,
+        marginBottom: 100,
     },
     "& .MuiOutlinedInput-root": {
         padding: 5,

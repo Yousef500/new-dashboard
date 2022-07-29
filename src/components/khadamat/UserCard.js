@@ -35,7 +35,9 @@ const UserCard = ({ user }) => {
                     gutterBottom: true,
                 }}
                 title={user.NameFl}
-                action={<UserCardDropdown user={user} setUserLoading={setLoading} />}
+                action={
+                    <UserCardDropdown user={user} setUserLoading={setLoading} loading={loading} />
+                }
             />
             <Divider />
             <CardContent>

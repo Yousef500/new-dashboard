@@ -1,4 +1,7 @@
 import InputField from "components/khadamat/InputField";
+import PermissionsCard from "components/khadamat/PermissionsCard";
+import MDButton from "components/MDButton";
+import MDInput from "components/MDInput";
 import { useState } from "react";
 
 const {
@@ -14,6 +17,10 @@ const {
     Checkbox,
     ListItemText,
     Button,
+    Divider,
+    CardHeader,
+    CardActions,
+    CardContent,
 } = require("@mui/material");
 
 const mainRoles = [
@@ -67,14 +74,26 @@ const application = [
     },
 ];
 
-const permissionsToAdd = ["view", "edit", "delete", "add"];
-
 const UsersPermissions = () => {
-    const [checked, setChecked] = useState([]);
+    const [permissionsToAddChecked, setPermissionsToAddChecked] = useState([]);
+    const [addedPermissionsChecked, setAddedPermissionsChecked] = useState([]);
+    const [permissionsToAdd, setPermissionsToAdd] = useState(["view", "edit"]);
+    const [addedPermissions, setAddedPermissions] = useState([
+        "control",
+        "delete",
+        "add",
+        "remove",
+        "حذف",
+        "اضافة",
+        "تحكم",
+        "تعديل",
+        "test",
+        "اختبار",
+    ]);
 
-    const handleToggle = (val) => {
-        const currentIndex = checked.indexOf(val);
-        const newChecked = [...checked];
+    const handleTogglePermissionsToAdd = (val) => {
+        const currentIndex = permissionsToAddChecked.indexOf(val);
+        const newChecked = [...permissionsToAddChecked];
 
         console.log(val);
 
@@ -84,11 +103,61 @@ const UsersPermissions = () => {
             newChecked.splice(currentIndex, 1);
         }
 
-        setChecked(newChecked);
+        setPermissionsToAddChecked(newChecked);
+    };
+
+    const handleToggleAddedPermissions = (val) => {
+        const currentIndex = addedPermissionsChecked.indexOf(val);
+        const newChecked = [...addedPermissionsChecked];
+
+        console.log(val);
+
+        if (currentIndex === -1) {
+            newChecked.push(val);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+
+        setAddedPermissionsChecked(newChecked);
+    };
+
+    const handleAddPermissions = () => {
+        const newAddedPermissions = [...addedPermissions, ...permissionsToAddChecked];
+        setAddedPermissions(newAddedPermissions);
+        setAddedPermissionsChecked([...addedPermissionsChecked, ...permissionsToAddChecked]);
+        const newPermissionsToAdd = [...permissionsToAdd];
+        permissionsToAddChecked.forEach((perm) => {
+            const index = newPermissionsToAdd.indexOf(perm);
+            newPermissionsToAdd.splice(index, 1);
+        });
+        setPermissionsToAdd(newPermissionsToAdd);
+        setPermissionsToAddChecked([]);
+    };
+
+    const handleRemovePermissions = () => {
+        const newPermissionsToAdd = [...permissionsToAdd, ...addedPermissionsChecked];
+        setPermissionsToAdd(newPermissionsToAdd);
+        setPermissionsToAddChecked([...addedPermissionsChecked, ...permissionsToAddChecked]);
+        const newAddedPermissions = [...addedPermissions];
+        addedPermissionsChecked.forEach((perm) => {
+            const index = newAddedPermissions.indexOf(perm);
+            newAddedPermissions.splice(index, 1);
+        });
+        setAddedPermissions(newAddedPermissions);
+        setAddedPermissionsChecked([]);
+    };
+
+    const handleToggleAllPermissionsToAdd = () => {
+        setPermissionsToAddChecked([]);
+    };
+
+    const handleToggleAllAddedPermissions = () => {
+        setAddedPermissionsChecked([]);
     };
 
     const handleSubmit = () => {
-        console.log(checked);
+        console.log({ permissionsToAdd });
+        console.log({ addedPermissions });
     };
 
     return (
@@ -126,34 +195,27 @@ const UsersPermissions = () => {
                         )}
                     />
                 </Grid>
-                <Grid item xs={5}>
-                    <Card elevation={10}>
-                        <List>
-                            {permissionsToAdd.map((value) => (
-                                <ListItem
-                                    key={value}
-                                    button
-                                    disableRipple
-                                    onClick={() => handleToggle(value)}
-                                >
-                                    <ListItemIcon>
-                                        <Checkbox
-                                            tabIndex={-1}
-                                            checked={checked.indexOf(value) !== -1}
-                                        />
-                                    </ListItemIcon>
-                                    <ListItemText primary={value} />
-                                </ListItem>
-                            ))}
-                        </List>
-                        <Button onClick={handleSubmit}>s</Button>
-                    </Card>
+                <Grid item xs={12} md={6}>
+                    <PermissionsCard
+                        list={permissionsToAdd}
+                        handleToggle={handleTogglePermissionsToAdd}
+                        title="صلاحيات يمكنك اضافتها"
+                        checked={permissionsToAddChecked}
+                        handleSubmit={handleAddPermissions}
+                        actionLabel="اضافة"
+                        actionColor="success"
+                    />
                 </Grid>
-                <Grid item xs={2}>
-                    s
-                </Grid>
-                <Grid item xs={5}>
-                    s
+                <Grid item xs={12} md={6}>
+                    <PermissionsCard
+                        list={addedPermissions}
+                        handleToggle={handleToggleAddedPermissions}
+                        title="صلاحيات تمت اضافتها"
+                        checked={addedPermissionsChecked}
+                        handleSubmit={handleRemovePermissions}
+                        actionLabel="ازالة"
+                        actionColor="error"
+                    />
                 </Grid>
             </Grid>
         </Container>
