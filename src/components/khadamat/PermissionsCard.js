@@ -62,8 +62,8 @@ const PermissionsCard = ({
                 avatar={
                     <Checkbox
                         onClick={toggleAll}
-                        checked={checked.length === list.length && list.length}
-                        indeterminate={checked.length !== list.length && checked.length}
+                        checked={checked.length === list.length && list.length > 0}
+                        indeterminate={checked.length !== list.length && checked.length > 0}
                         // color={"success"}
                         disabled={list.length === 0}
                     />

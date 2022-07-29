@@ -95,8 +95,6 @@ const UsersPermissions = () => {
         const currentIndex = permissionsToAddChecked.indexOf(val);
         const newChecked = [...permissionsToAddChecked];
 
-        console.log(val);
-
         if (currentIndex === -1) {
             newChecked.push(val);
         } else {
@@ -109,8 +107,6 @@ const UsersPermissions = () => {
     const handleToggleAddedPermissions = (val) => {
         const currentIndex = addedPermissionsChecked.indexOf(val);
         const newChecked = [...addedPermissionsChecked];
-
-        console.log(val);
 
         if (currentIndex === -1) {
             newChecked.push(val);

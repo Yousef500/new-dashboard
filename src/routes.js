@@ -47,18 +47,32 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
-import { ExitToApp, SupervisedUserCircle } from "@mui/icons-material";
-import UsersManagement from "pages/UsersManagement";
+import {
+    DashboardCustomizeRounded,
+    ExitToApp,
+    PeopleAltRounded,
+    SupervisedUserCircle,
+} from "@mui/icons-material";
 import SignOut from "components/khadamat/SignOut";
+import UsersDashboard from "pages/UsersDashboard";
+import DeadDashboard from "pages/DeadDashboard";
 
 const routes = [
     {
         type: "collapse",
         name: "الحماية والمستخدمين",
-        key: "usersManagement",
-        icon: <SupervisedUserCircle />,
-        route: "/users-management",
-        component: <UsersManagement />,
+        key: "usersDashboard",
+        icon: <PeopleAltRounded />,
+        route: "/users",
+        component: <UsersDashboard />,
+    },
+    {
+        type: "collapse",
+        name: "إكرام",
+        key: "deadDashboard",
+        icon: <DashboardCustomizeRounded />,
+        route: "/dead",
+        component: <DeadDashboard />,
     },
     {
         type: "collapse",

@@ -55,7 +55,7 @@ import brandWhite from "assets/images/logo-ct.png";
 import ProtectedRoute from "components/khadamat/ProtectedRoute";
 import SignIn from "layouts/authentication/sign-in";
 import CreateUser from "pages/CreateUser";
-import CustomUsers from "pages/CustomUsers";
+import UsersManagement from "pages/UsersManagement";
 import EditUser from "pages/EditUser";
 import { useSelector } from "react-redux";
 import { Slide, ToastContainer } from "react-toastify";
@@ -183,10 +183,10 @@ export default function App() {
                         <Routes>
                             <Route element={<ProtectedRoute allowed={!!userInfo?.Token} />}>
                                 {getRoutes(routes)}
-                                <Route path="/users" element={<CustomUsers />} />  
+                                <Route path="/users/management" element={<UsersManagement />} />
+                                <Route path="/users/permissions" element={<UsersPermissions />} />
                                 <Route path="/users/create" element={<CreateUser />} />
                                 <Route path="/users/edit/:id" element={<EditUser />} />
-                                <Route path="/users/permissions" element={<UsersPermissions />} />
                             </Route>
                             <Route path="/sign-in" element={<SignIn />} />
                             <Route path="*" element={<Navigate to="/sign-in" />} />

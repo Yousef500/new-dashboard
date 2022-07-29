@@ -60,7 +60,7 @@ function Basic() {
         try {
             const { data } = await usersAx.login(creds);
             dispatch(setCurrentUser(data));
-            navigate("/users-management");
+            navigate("/users");
         } catch (err) {
             console.error(err);
             toast.error(err.response.data?.Message ?? "تأكد من صحة البيانات")
