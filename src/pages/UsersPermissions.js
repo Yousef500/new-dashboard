@@ -61,7 +61,7 @@ const subRoles = [
 
 const application = [
     {
-        label: "Honoor the dead",
+        label: "Honor the dead",
     },
     {
         label: "Environment health",
@@ -148,11 +148,19 @@ const UsersPermissions = () => {
     };
 
     const handleToggleAllPermissionsToAdd = () => {
-        setPermissionsToAddChecked([]);
+        if (permissionsToAddChecked.length === permissionsToAdd.length) {
+            setPermissionsToAddChecked([]);
+        } else {
+            setPermissionsToAddChecked([...permissionsToAdd]);
+        }
     };
 
     const handleToggleAllAddedPermissions = () => {
-        setAddedPermissionsChecked([]);
+        if (addedPermissionsChecked.length === addedPermissions.length) {
+            setAddedPermissionsChecked([]);
+        } else {
+            setAddedPermissionsChecked([...addedPermissions]);
+        }
     };
 
     const handleSubmit = () => {
@@ -191,7 +199,7 @@ const UsersPermissions = () => {
                     <Autocomplete
                         options={application}
                         renderInput={(params) => (
-                            <InputField {...params} label="الصفحات" type="text" />
+                            <InputField {...params} label="الصفحة" type="text" />
                         )}
                     />
                 </Grid>
@@ -204,6 +212,7 @@ const UsersPermissions = () => {
                         handleSubmit={handleAddPermissions}
                         actionLabel="اضافة"
                         actionColor="success"
+                        toggleAll={handleToggleAllPermissionsToAdd}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -215,6 +224,7 @@ const UsersPermissions = () => {
                         handleSubmit={handleRemovePermissions}
                         actionLabel="ازالة"
                         actionColor="error"
+                        toggleAll={handleToggleAllAddedPermissions}
                     />
                 </Grid>
             </Grid>
