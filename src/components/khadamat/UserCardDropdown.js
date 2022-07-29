@@ -3,15 +3,15 @@ import {
     Check,
     EditRounded,
     MoreVertOutlined,
-    RotateLeftRounded,
+    RotateLeftRounded
 } from "@mui/icons-material";
 import { CircularProgress, Dialog, Fade, IconButton, Menu } from "@mui/material";
-import { usersAx } from "config/axios-config";
+import usersService from "config/axios/usersService";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { setUsers, setUsersLoading } from "redux/slices/usersSlice";
+import { setUsers } from "redux/slices/usersSlice";
 import DropdownItem from "./DropdownItem";
 import PasswordResetDialog from "./PasswordResetDialog";
 
@@ -45,9 +45,9 @@ const UserCardDropdown = ({ user, loading, setUserLoading }) => {
         try {
             closeMenu();
             // dispatch(setUsersLoading(true));
-            const { data } = await usersAx.changeStatus({ userId: user.Id, status });
+            const { data } = await usersService.changeStatus({ userId: user.Id, status });
             console.log("data", data);
-            const usersRes = await usersAx.searchUsers();
+            const usersRes = await usersService.searchUsers();
             dispatch(setUsers(usersRes.data));
             toast.success("تمت العملية بنجاح");
         } catch (err) {

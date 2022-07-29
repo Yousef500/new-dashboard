@@ -14,7 +14,7 @@ const UsersDashboard = () => {
                 <Grid item xs={12}>
                     <Stack spacing={3} direction={"row"}>
                         <Fade in timeout={500}>
-                            <MDButton variant="gradient" color="info" component={Link} to="/users">
+                            <MDButton variant="gradient" color="info" component={Link} to="/users/management">
                                 <Typography variant="h4" color="#FFFFFF">
                                     إدارة المستخدمين
                                 </Typography>

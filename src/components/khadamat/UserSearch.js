@@ -1,6 +1,6 @@
 import { Search } from "@mui/icons-material";
 import { Divider, IconButton, InputBase, Paper, Stack } from "@mui/material";
-import { usersAx } from "config/axios-config";
+import usersService from "config/axios/usersService";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import {
@@ -19,7 +19,7 @@ const UserSearch = () => {
             dispatch(setUsersLoading(true));
             dispatch(setUsersPageNo(1));
             dispatch(setUsersFilterBy(filterBy));
-            const { data } = await usersAx.searchUsers();
+            const { data } = await usersService.searchUsers();
             dispatch(setUsers(data));
         } catch (err) {
             console.error(err);

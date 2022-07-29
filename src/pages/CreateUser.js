@@ -12,9 +12,9 @@ import {
 import InputField from "components/khadamat/InputField";
 import JobsAutoComplete from "components/khadamat/JobsAutoComplete";
 import ManagerAutoComplete from "components/khadamat/ManagerAutoComplete";
-import MDButton from "components/MDButton";
 import RolesAutoComplete from "components/khadamat/RolesAutoComplete";
-import { usersAx } from "config/axios-config";
+import MDButton from "components/MDButton";
+import usersService from "config/axios/usersService";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -51,7 +51,7 @@ const CreateUser = () => {
                 managerId: managers.length ? manager.Key : "",
                 companyName: userData.isCompany ? userData.companyName : "",
             });
-            const addUserRes = await usersAx.addUser({
+            const addUserRes = await usersService.addUser({
                 ...userData,
                 securityRolesList,
                 securityUserJobId: job.Key,

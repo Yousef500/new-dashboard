@@ -1,7 +1,7 @@
 import { CancelOutlined, Save } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { Box, DialogActions, DialogContent, DialogTitle, Stack } from "@mui/material";
-import { usersAx } from "config/axios-config";
+import usersService from "config/axios/usersService";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -25,7 +25,7 @@ const PasswordResetDialog = ({ username, setDialogStatus }) => {
     const handlePasswordReset = async ({ newPassword }) => {
         setLoading(true);
         try {
-            const { data } = await usersAx.resetPassword({ username, newPassword });
+            const { data } = await usersService.resetPassword({ username, newPassword });
             console.log({ data });
             setDialogStatus(false);
             toast.success("تم تغيير كلمة المرور بنجاح");

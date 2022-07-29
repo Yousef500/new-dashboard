@@ -1,5 +1,5 @@
 import { Autocomplete, CircularProgress } from "@mui/material";
-import { usersAx } from "config/axios-config";
+import usersService from "config/axios/usersService";
 import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import InputField from "./InputField";
@@ -16,11 +16,11 @@ const JobsAutoComplete = ({ control, setManagers, job = {}, setValue, ...inputPr
         let managers;
         switch (val.StringValue) {
             case "مفتش صحى":
-                managers = await usersAx.getUsersByJobId("4e6c3eb9-5740-45f9-932c-15b5640b29a9");
+                managers = await usersService.getUsersByJobId("4e6c3eb9-5740-45f9-932c-15b5640b29a9");
                 setManagers(managers.data);
                 break;
             case "حارس أمن":
-                managers = await usersAx.getUsersByJobId("62c8b767-b13c-4d2a-a396-1260f7bb9d2e");
+                managers = await usersService.getUsersByJobId("62c8b767-b13c-4d2a-a396-1260f7bb9d2e");
                 setManagers(managers.data);
                 break;
             default:
@@ -36,7 +36,7 @@ const JobsAutoComplete = ({ control, setManagers, job = {}, setValue, ...inputPr
             }
             setLoading(true);
             try {
-                const { data } = await usersAx.getJobs();
+                const { data } = await usersService.getJobs();
                 console.log("data", data);
                 setJobs(data);
             } catch (err) {

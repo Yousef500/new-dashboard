@@ -16,7 +16,7 @@ import JobsAutoComplete from "components/khadamat/JobsAutoComplete";
 import ManagerAutoComplete from "components/khadamat/ManagerAutoComplete";
 import MDButton from "components/MDButton";
 import RolesAutoComplete from "components/khadamat/RolesAutoComplete";
-import { usersAx } from "config/axios-config";
+import usersService from "config/axios/usersService";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -60,9 +60,9 @@ const EditUser = () => {
                 dispatch(setUsersPageNo(1));
                 dispatch(setUsersFilterBy(""));
                 console.log(id);
-                const { data } = await usersAx.searchUsers({ id });
+                const { data } = await usersService.searchUsers({ id });
                 const userData = data.PagedList[0];
-                const { data: managerData } = await usersAx.searchUsers({ id: userData.ManagerId });
+                const { data: managerData } = await usersService.searchUsers({ id: userData.ManagerId });
                 // await getDefaultManager(userData.ManagerId);
                 console.log("defaultManager", managerData);
                 reset({
@@ -109,7 +109,7 @@ const EditUser = () => {
                 securityUserJobId: job.Key,
                 securityRolesList,
             });
-            const editUserRes = await usersAx.editUser({
+            const editUserRes = await usersService.editUser({
                 id,
                 nationalNumber: userData.NationalNumber,
                 jobNumber: userData.JobNumber,
@@ -127,7 +127,7 @@ const EditUser = () => {
 
             console.log(editUserRes);
             dispatch(setUsersLoading(true));
-            const { data: updatedUsers } = await usersAx.searchUsers();
+            const { data: updatedUsers } = await usersService.searchUsers();
             dispatch(setUsers(updatedUsers));
             navigate("/users");
             toast.success("تم تعديل المستخدم بنجاح");

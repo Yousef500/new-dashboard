@@ -8,7 +8,7 @@ import Center from "../components/khadamat/Center";
 import UserCard from "../components/khadamat/UserCard";
 import UserSearch from "../components/khadamat/UserSearch";
 import MDButton from "../components/MDButton";
-import { usersAx } from "../config/axios-config";
+import usersService from "../config/axios/usersService";
 
 const UsersManagement = () => {
     const dispatch = useDispatch();
@@ -17,8 +17,9 @@ const UsersManagement = () => {
     useEffect(() => {
         if (users.length === 0) {
             (async () => {
+                dispatch(setUsersLoading(true));
                 try {
-                    const { data } = await usersAx.searchUsers();
+                    const { data } = await usersService.searchUsers();
                     dispatch(setUsers(data));
                     console.log(data);
                 } catch (err) {
@@ -32,7 +33,7 @@ const UsersManagement = () => {
     const handlePageChange = async (e, newPage) => {
         dispatch(setUsersPageNo(newPage));
         try {
-            const { data } = await usersAx.searchUsers();
+            const { data } = await usersService.searchUsers();
             dispatch(setUsers(data));
             console.log(data);
         } catch (err) {

@@ -3,12 +3,14 @@ import { persistStore } from "redux-persist";
 import persistCombineReducers from "redux-persist/es/persistCombineReducers";
 import session from "redux-persist/lib/storage/session";
 import thunk from "redux-thunk";
-import userReducer from "./slices/currentUserSlice";
+import currentUserReducer from "./slices/currentUserSlice";
+import deadReducer from "./slices/deadSlice";
 import usersReducer from "./slices/usersSlice";
 
 const reducers = {
-    currentUser: userReducer,
+    currentUser: currentUserReducer,
     users: usersReducer,
+    dead: deadReducer,
 };
 
 const persistConfig = {

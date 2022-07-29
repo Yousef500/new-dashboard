@@ -1,5 +1,5 @@
 import { Autocomplete, CircularProgress } from "@mui/material";
-import { usersAx } from "config/axios-config";
+import usersService from "config/axios/usersService";
 import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import InputField from "./InputField";
@@ -12,7 +12,7 @@ const RolesAutoComplete = ({ control }) => {
         (async () => {
             setLoading(true);
             try {
-                const { data } = await usersAx.getAllUsersRoles();
+                const { data } = await usersService.getAllUsersRoles();
                 console.log("securityRoles", data);
                 setSecurityRoles(data);
             } catch (err) {

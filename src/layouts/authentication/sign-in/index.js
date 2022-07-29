@@ -33,7 +33,7 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 import { LoadingButton } from "@mui/lab";
 import { Box, TextField } from "@mui/material";
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-import { usersAx } from "config/axios-config";
+import usersService from "config/axios/usersService";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -58,12 +58,13 @@ function Basic() {
     const handleLogin = async (creds) => {
         setLoading(true);
         try {
-            const { data } = await usersAx.login(creds);
+            const { data } = await usersService.login(creds);
             dispatch(setCurrentUser(data));
             navigate("/users");
         } catch (err) {
             console.error(err);
-            toast.error(err.response.data?.Message ?? "تأكد من صحة البيانات")
+            toast.error(err.response.data?.Message ?? "تأكد من صحة البيانات");
+            setLoading(false);
         }
         setLoading(false);
     };
