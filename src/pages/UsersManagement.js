@@ -21,7 +21,7 @@ const UsersManagement = () => {
                             </MDButton>
                         </Fade>
                         <Fade in timeout={700}>
-                            <MDButton variant="gradient" color="info">
+                            <MDButton variant="gradient" color="info" component={Link} to="/users/permissions">
                                 <Typography variant="h4" color="#FFFFFF">
                                     إدارة الصلاحيات
                                 </Typography>

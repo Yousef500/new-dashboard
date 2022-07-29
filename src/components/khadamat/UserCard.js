@@ -27,22 +27,16 @@ const UserCard = ({ user }) => {
                 pb: 2,
             }}
         >
-            {loading ? (
-                <Center my={2}>
-                    <CircularProgress color="info" size={50} />
-                </Center>
-            ) : (
-                <CardHeader
-                    titleTypographyProps={{
-                        variant: "h3",
-                        align: "center",
-                        color: `${user.IsActive ? "green" : "inherit"}`,
-                        gutterBottom: true,
-                    }}
-                    title={user.NameFl}
-                    action={<UserCardDropdown user={user} setUserLoading={setLoading} />}
-                />
-            )}
+            <CardHeader
+                titleTypographyProps={{
+                    variant: "h3",
+                    align: "center",
+                    color: `${user.IsActive ? "green" : "inherit"}`,
+                    gutterBottom: true,
+                }}
+                title={user.NameFl}
+                action={<UserCardDropdown user={user} setUserLoading={setLoading} />}
+            />
             <Divider />
             <CardContent>
                 <UserCardContent user={user} loading={loading} />

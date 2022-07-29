@@ -13,6 +13,7 @@ const UserCardStatus = ({ active, noDivider, loading, labelProps }) => (
                     label={active ? "فعال" : "غير فعال"}
                     variant="filled"
                     color={active ? "info" : "default"}
+                    sx={{width: 80}}
                 />
             )}
         </Stack>

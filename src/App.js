@@ -59,6 +59,7 @@ import CustomUsers from "pages/CustomUsers";
 import EditUser from "pages/EditUser";
 import { useSelector } from "react-redux";
 import { Slide, ToastContainer } from "react-toastify";
+import UsersPermissions from "pages/UsersPermissions";
 
 export default function App() {
     const [controller, dispatch] = useMaterialUIController();
@@ -185,6 +186,7 @@ export default function App() {
                                 <Route path="/users" element={<CustomUsers />} />  
                                 <Route path="/users/create" element={<CreateUser />} />
                                 <Route path="/users/edit/:id" element={<EditUser />} />
+                                <Route path="/users/permissions" element={<UsersPermissions />} />
                             </Route>
                             <Route path="/sign-in" element={<SignIn />} />
                             <Route path="*" element={<Navigate to="/sign-in" />} />
