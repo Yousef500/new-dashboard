@@ -60,6 +60,7 @@ import EditUser from "pages/EditUser";
 import { useSelector } from "react-redux";
 import { Slide, ToastContainer } from "react-toastify";
 import UsersPermissions from "pages/UsersPermissions";
+import DeadManagement from "pages/DeadManagement";
 
 export default function App() {
     const [controller, dispatch] = useMaterialUIController();
@@ -183,6 +184,7 @@ export default function App() {
                         <Routes>
                             <Route element={<ProtectedRoute allowed={!!userInfo?.Token} />}>
                                 {getRoutes(routes)}
+                                <Route path="/dead/management" element={<DeadManagement />} />
                                 <Route path="/users/management" element={<UsersManagement />} />
                                 <Route path="/users/permissions" element={<UsersPermissions />} />
                                 <Route path="/users/create" element={<CreateUser />} />

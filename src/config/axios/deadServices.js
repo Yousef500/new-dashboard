@@ -13,12 +13,14 @@ dead.interceptors.request.use(
         config.headers.Authorization = `bearer ${authToken}`;
         config.headers["Accept-Language"] = "ar";
         if (config.url.includes("Search")) {
-            const { page, pageSize, filterBy } = state.dead;
+            const { page, pageSize, filterBy, sortBy, orderBy } = state.dead;
             const data = {
                 ...config.data,
                 filterBy,
                 page,
                 pageSize,
+                sortBy,
+                orderby: orderBy,
             };
             console.log("config", config);
             config.data = data;

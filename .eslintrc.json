@@ -21,6 +21,7 @@
         ],
         "default-param-last": "off",
         "no-unneeded-ternary": "off",
+        "jsx-a11y/anchor-is-valid": "off",
         "no-else-return": "off",
         "react/jsx-boolean-value": "off",
         "no-nested-ternary": "off",

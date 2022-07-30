@@ -1,41 +1,38 @@
-import { PlaylistAddOutlined } from "@mui/icons-material";
-import { Container, Grid, Stack, Typography } from "@mui/material";
+import { Container, Fade, Grid, Grow, Stack, Typography } from "@mui/material";
 import MDButton from "components/MDButton";
-import deadService from "config/axios/deadServices";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
+
 
 const DeadDashboard = () => {
-    useEffect(() => {
-        (async () => {
-            const { data: deadData } = await deadService.searchDead();
-            console.log({ deadData });
-        })();
-    }, []);
-
     return (
         <Container>
-            <Grid container spacing={3} justifyContent="center" alignItems="center" my={5}>
+            <Grid container spacing={3} my={5} mx={2}>
                 <Grid item xs={12}>
-                    <Stack direction="row" justifyContent="space-between">
-                        <Typography gutterBottom variant="h1">
-                            إكرام
-                        </Typography>
-                        <MDButton
-                            variant="gradient"
-                            color="secondary"
-                            sx={{ fontSize: 25 }}
-                            startIcon={<PlaylistAddOutlined />}
-                        >
-                            إضافة سجل
-                        </MDButton>
-                    </Stack>
+                    <Typography variant="h1" gutterBottom align="center">
+                        إكرام
+                    </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    h
+                    <Stack spacing={3} direction={"row"}>
+                        <Fade in timeout={500}>
+                            <MDButton variant="gradient" color="info" component={Link} to="/dead/management">
+                                <Typography variant="h4" color="#FFFFFF">
+                                    تكريم المتوفيين
+                                </Typography>
+                            </MDButton>
+                        </Fade>
+                        <Fade in timeout={700}>
+                            <MDButton variant="gradient" color="info">
+                                <Typography variant="h4" color="#FFFFFF">
+                                    المقابر
+                                </Typography>
+                            </MDButton>
+                        </Fade>
+                    </Stack>
                 </Grid>
             </Grid>
         </Container>
     );
-};
+}
 
-export default DeadDashboard;
+export default DeadDashboard
