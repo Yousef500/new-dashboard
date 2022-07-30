@@ -17,7 +17,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { setDead, setDeadLoading, setOrderBy, setSortBy } from "redux/slices/deadSlice";
-import Center from "./khadamat/Center";
+import Center from "./Center";
+import DeadDropdown from "./DeadDropdown";
 
 const tableHeads = [
     {
@@ -80,9 +81,15 @@ const DeadTable = () => {
 
     useEffect(() => {
         (async () => {
-            const { data: deadData } = await deadService.searchDead();
-            dispatch(setDead(deadData.PagedList));
-            console.log({ deadData });
+            try {
+                dispatch(setDeadLoading(true));
+                const { data: deadData } = await deadService.searchDead();
+                dispatch(setDead(deadData.PagedList));
+                console.log({ deadData });
+            } catch (err) {
+                console.log({ err });
+                dispatch(setDeadLoading(false));
+            }
         })();
     }, []);
 
@@ -111,12 +118,13 @@ const DeadTable = () => {
     };
 
     return (
-        <TableContainer sx={{ height: 850 }}>
+        <TableContainer sx={{ maxHeight: 1500 }}>
             <Table>
                 <thead>
                     <TableRow>
                         {tableHeads.map((head) => (
                             <TableCell
+                                sx={{ width: "max-content" }}
                                 align={head.align || "center"}
                                 key={head.id}
                                 sortDirection={orderBy ? "asc" : "desc"}
@@ -132,10 +140,14 @@ const DeadTable = () => {
                                 </TableSortLabel>
                             </TableCell>
                         ))}
+                        <TableCell sx={{ width: "max-content" }}>
+                            <Typography variant="h5">الاجراءات</Typography>
+                        </TableCell>
                     </TableRow>
                 </thead>
-                {deadLoading ? (
-                    <TableBody>
+
+                <TableBody>
+                    {deadLoading ? (
                         <TableRow sx={{ height: 700 }}>
                             <TableCell colSpan={10}>
                                 <Center>
@@ -143,10 +155,8 @@ const DeadTable = () => {
                                 </Center>
                             </TableCell>
                         </TableRow>
-                    </TableBody>
-                ) : (
-                    <TableBody>
-                        {dead.map(
+                    ) : (
+                        dead.map(
                             ({
                                 Id,
                                 NameFl,
@@ -161,6 +171,8 @@ const DeadTable = () => {
                                 GenderTypeName,
                                 NationalityName,
                                 NationalNumber,
+                                CemeteryLocationLat,
+                                CemeteryLocationLong,
                             }) => (
                                 <TableRow hover key={Id}>
                                     <Tooltip title="التفاصيل">
@@ -211,16 +223,17 @@ const DeadTable = () => {
                                         <TableCell align="center">{NationalNumber}</TableCell>
                                     </Tooltip>
 
-                                    <Tooltip title={"الاجراءات"}>
-                                        <TableCell align="center">
-                                            <MoreVert />
-                                        </TableCell>
-                                    </Tooltip>
+                                    <TableCell align="center">
+                                        <DeadDropdown
+                                            lat={CemeteryLocationLat}
+                                            long={CemeteryLocationLong}
+                                        />
+                                    </TableCell>
                                 </TableRow>
                             )
-                        )}
-                    </TableBody>
-                )}
+                        )
+                    )}
+                </TableBody>
             </Table>
         </TableContainer>
     );

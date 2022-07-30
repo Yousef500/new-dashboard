@@ -1,14 +1,11 @@
 import { PlaylistAddOutlined } from "@mui/icons-material";
 import { Container, Grid, Stack, Typography } from "@mui/material";
-import DeadTable from "components/DeadTable";
+import DeadTable from "components/khadamat/DeadTable";
 import MDButton from "components/MDButton";
-import deadService from "config/axios/deadServices";
-import { useEffect } from "react";
 
 const DeadManagement = () => {
-
     return (
-        <Container>
+        <Container maxWidth={false} sx={{ width: "max-content" }}>
             <Grid container spacing={3} justifyContent="center" alignItems="center" my={5}>
                 <Grid item xs={12}>
                     <Stack direction="row" justifyContent="space-between">
