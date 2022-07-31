@@ -24,7 +24,7 @@ const DeadCard = ({ person }) => {
             elevation={10}
             sx={{
                 height: 550,
-                overflowY: "max-content",
+                overflowY: "auto",
                 background: `
                     linear-gradient(
                         45deg,
