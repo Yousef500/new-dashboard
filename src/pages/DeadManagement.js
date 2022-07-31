@@ -55,7 +55,7 @@ const DeadManagement = () => {
     };
 
     return (
-        <Container maxWidth={false} sx={{ width: "max-content" }}>
+        <Container>
             <Grid container spacing={3} justifyContent="center" alignItems="center" my={5}>
                 <Grid item xs={12}>
                     <Stack direction="row" justifyContent="space-between">
@@ -93,7 +93,7 @@ const DeadManagement = () => {
                     </Center>
                 ) : (
                     dead.map((person) => (
-                        <Grid item xs={10} sm={10} md={5} lg={4} key={person.Id}>
+                        <Grid item xs={10} sm={10} md={6} lg={4} key={person.Id}>
                             <DeadCard person={person} />
                         </Grid>
                     ))
@@ -113,7 +113,7 @@ const DeadManagement = () => {
                     </Center>
                 </Grid>
                 {filterOpen && (
-                    <Grid xs={12}>
+                    <Grid item xs={12}>
                         <FilterDialog open={filterOpen} onClose={() => setFilterOpen(false)} />
                     </Grid>
                 )}

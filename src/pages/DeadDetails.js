@@ -115,7 +115,7 @@ const DeadDetails = () => {
                         alignItems="center"
                         justifyContent={"center"}
                     >
-                        <Grid item xs={12} sm={6} md={5} lg={5}>
+                        <Grid item xs={12} sm={12} md={6} lg={5}>
                             <DeadDetailsData
                                 title="العمر:"
                                 data={`${person.AgeYears} سنة / ${person.AgeMonths} أشهر / ${person.AgeDays} أيام`}
@@ -145,8 +145,8 @@ const DeadDetails = () => {
                                 }
                             />
                         </Grid>
-                        <Grid item xs={0} md={2} lg={2} />
-                        <Grid item xs={12} sm={6} md={5} lg={5}>
+                        <Grid item xs={0} md={0} lg={2} />
+                        <Grid item xs={12} sm={12} md={6} lg={5}>
                             <DeadDetailsData title="المقبرة:" data={person.CemeteryName} />
                             <DeadDetailsData title="عنوان المقبرة:" data={person.CemeteryAddress} />
                             <DeadDetailsData title="رقم المربع:" data={person.SquareNumber} />
