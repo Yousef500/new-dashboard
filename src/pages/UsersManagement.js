@@ -15,19 +15,17 @@ const UsersManagement = () => {
     const { users, pageCount, page, usersLoading } = useSelector((state) => state.users);
 
     useEffect(() => {
-        if (users.length === 0) {
-            (async () => {
-                dispatch(setUsersLoading(true));
-                try {
-                    const { data } = await usersService.searchUsers();
-                    dispatch(setUsers(data));
-                    console.log(data);
-                } catch (err) {
-                    console.log(err);
-                    dispatch(setUsersLoading(false));
-                }
-            })();
-        }
+        (async () => {
+            dispatch(setUsersLoading(true));
+            try {
+                const { data } = await usersService.searchUsers();
+                dispatch(setUsers(data));
+                console.log({data});
+            } catch (err) {
+                console.log(err);
+                dispatch(setUsersLoading(false));
+            }
+        })();
     }, []);
 
     const handlePageChange = async (e, newPage) => {
@@ -35,7 +33,7 @@ const UsersManagement = () => {
         try {
             const { data } = await usersService.searchUsers();
             dispatch(setUsers(data));
-            console.log(data);
+            console.log({data});
         } catch (err) {
             console.log(err);
             dispatch(setUsersLoading(false));

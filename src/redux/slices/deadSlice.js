@@ -14,8 +14,13 @@ const deadSlice = createSlice({
     },
     reducers: {
         setDead: (state, action) => {
-            state.dead = action.payload;
+            state.dead = action.payload.PagedList;
+            state.pageCount = action.payload.PageCount;
             state.deadLoading = false;
+        },
+        setDeadPageNo: (state, action) => {
+            state.page = action.payload;
+            state.deadLoading = true;
         },
         setOrderBy: (state, action) => {
             state.orderBy = action.payload;
@@ -24,11 +29,11 @@ const deadSlice = createSlice({
             state.sortBy = action.payload;
         },
         setDeadLoading: (state, action) => {
-            state.deadLoading = action.payload
-        }
+            state.deadLoading = action.payload;
+        },
     },
 });
 
-export const { setDead, setOrderBy, setSortBy, setDeadLoading } = deadSlice.actions;
+export const { setDead, setOrderBy, setSortBy, setDeadLoading, setDeadPageNo } = deadSlice.actions;
 
 export default deadSlice.reducer;

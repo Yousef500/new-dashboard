@@ -1,16 +1,16 @@
-import UserCardData from "./UserCardData";
+import CardData from "./CardData";
 import UserCardStatus from "./UserCardStatus";
 
 const UserCardContent = ({ user, loading }) => (
     <>
-        <UserCardData label="اسم المستخدم:" data={user.Username} />
-        <UserCardData label="رقم الجوال:" data={user.Mobile} />
-        <UserCardData label="رقم الهوية:" data={user.NationalNumber} />
-        <UserCardData label="البريد:" data={user.Email} />
-        <UserCardData label="الرقم الوظيفي:" data={user.JobNumber} />
+        <CardData label="اسم المستخدم:" data={user.Username} />
+        <CardData label="رقم الجوال:" data={user.Mobile} />
+        <CardData label="رقم الهوية:" data={user.NationalNumber} />
+        <CardData label="البريد:" data={user.Email} />
+        <CardData label="الرقم الوظيفي:" data={user.JobNumber} />
         <UserCardStatus active={user.IsActive} loading={loading} />
-        <UserCardData label="نوع الموظف:" data={user.IsCompany ? "شركة" : "رسمي"} />
-        <UserCardData label="الوظيفة:" data={user.SecurityUserJobNameFl} />
+        <CardData label="نوع الموظف:" data={user.IsCompany ? "شركة" : "رسمي"} />
+        <CardData label="الوظيفة:" data={user.SecurityUserJobNameFl} />
     </>
 );
 

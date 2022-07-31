@@ -1,6 +1,6 @@
 import { Divider, Stack, Typography } from "@mui/material";
 
-const UserCardData = ({ label, data, labelProps, dataProps, noDivider }) => (
+const CardData = ({ label, data, labelProps, dataProps, noDivider }) => (
     <>
         <Stack direction="row" justifyContent="space-between" spacing={2}>
             <Typography {...labelProps} variant="h5">
@@ -14,4 +14,4 @@ const UserCardData = ({ label, data, labelProps, dataProps, noDivider }) => (
     </>
 );
 
-export default UserCardData;
+export default CardData;
