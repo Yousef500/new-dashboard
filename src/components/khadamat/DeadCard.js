@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, Link, Tooltip, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import CardData from "./CardData";
 import DeadDropdown from "./DeadDropdown";
 
 const DeadCard = ({ person }) => {
+    const { page } = useSelector((state) => state.dead);
     const {
         NameFl,
         NationalityName,
@@ -48,11 +50,15 @@ const DeadCard = ({ person }) => {
                     // gutterBottom: true,
                 }}
                 title={
-                    <Link component={RouterLink} to={`/dead/${person.Id}`} underline="hover">
+                    <Link
+                        component={RouterLink}
+                        to={`/dead/${person.Id}?page=${page}`}
+                        underline="hover"
+                    >
                         {NameFl}
                     </Link>
                 }
-                action={<DeadDropdown lat={lat} long={lng} id={person.Id} />}
+                action={<DeadDropdown lat={lat} long={lng} id={person.Id} page={page} />}
             />
             <CardContent sx={{ mt: 2 }}>
                 <CardData

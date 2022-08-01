@@ -13,7 +13,6 @@ const RolesAutoComplete = ({ control }) => {
             setLoading(true);
             try {
                 const { data } = await usersService.getAllUsersRoles();
-                console.log("securityRoles", data);
                 setSecurityRoles(data);
             } catch (err) {
                 console.log(err);

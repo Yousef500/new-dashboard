@@ -59,12 +59,12 @@ const EditUser = () => {
             try {
                 dispatch(setUsersPageNo(1));
                 dispatch(setUsersFilterBy(""));
-                console.log(id);
                 const { data } = await usersService.searchUsers({ id });
                 const userData = data.PagedList[0];
-                const { data: managerData } = await usersService.searchUsers({ id: userData.ManagerId });
+                const { data: managerData } = await usersService.searchUsers({
+                    id: userData.ManagerId,
+                });
                 // await getDefaultManager(userData.ManagerId);
-                console.log("defaultManager", managerData);
                 reset({
                     ...userData,
                     job: {
@@ -81,7 +81,6 @@ const EditUser = () => {
                     })),
                 });
                 setDefaultsLoading(false);
-                console.log({ data });
             } catch (err) {
                 console.log({ err });
                 setDefaultsLoading(false);
@@ -94,21 +93,7 @@ const EditUser = () => {
         try {
             const { roles, job, manager, ...userData } = data;
             const securityRolesList = roles.map((role) => role.Key);
-            console.log({
-                id,
-                nationalNumber: userData.NationalNumber,
-                jobNumber: userData.JobNumber,
-                email: userData.Email,
-                mobile: userData.Mobile,
-                nameFl: userData.NameFl,
-                nameSl: userData.NameSl,
-                isActive: userData.IsActive,
-                companyName: userData.IsCompany ? userData.CompanyName : "",
-                isCompany: userData.IsCompany,
-                managerId: managers.length ? manager.Key : "",
-                securityUserJobId: job.Key,
-                securityRolesList,
-            });
+
             const editUserRes = await usersService.editUser({
                 id,
                 nationalNumber: userData.NationalNumber,
@@ -125,12 +110,11 @@ const EditUser = () => {
                 securityRolesList,
             });
 
-            console.log(editUserRes);
             dispatch(setUsersLoading(true));
             const { data: updatedUsers } = await usersService.searchUsers();
             dispatch(setUsers(updatedUsers));
-            navigate("/users");
             toast.success("تم تعديل المستخدم بنجاح");
+            navigate("/users");
         } catch (err) {
             console.log({ err });
             dispatch(setUsersLoading(false));

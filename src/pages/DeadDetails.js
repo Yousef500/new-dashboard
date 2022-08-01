@@ -17,7 +17,8 @@ import Center from "components/khadamat/Center";
 import DeadDetailsData from "components/khadamat/DeadDetailsData";
 import deadService from "config/axios/deadServices";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setDeadPageNo } from "redux/slices/deadSlice";
 
@@ -55,21 +56,24 @@ const cardStyles = {
 
 const DeadDetails = () => {
     const { id } = useParams();
+    const page = useLocation().search.split("page=")[1];
     const [person, setPerson] = useState({});
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: "AIzaSyCOBPIn28RWnezaIUxHC8dOHRSD7QU1FN4",
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+        language: "ar",
     });
 
     useEffect(() => {
         if (person && person.Id !== id) {
             (async () => {
                 try {
-                    setDeadPageNo(1);
+                    dispatch(setDeadPageNo(1));
                     const { data } = await deadService.searchDead({ id });
                     setPerson(data.PagedList[0]);
-                    console.log({ data });
                     setLoading(false);
                 } catch (err) {
                     console.log({ err });
@@ -88,8 +92,10 @@ const DeadDetails = () => {
         <Container>
             <Tooltip title="العودة الى اكرام">
                 <Fab
-                    component={Link}
-                    to={"/dead/management"}
+                    onClick={() => {
+                        dispatch(setDeadPageNo(Number(page)));
+                        navigate("/dead/management");
+                    }}
                     color="info"
                     variant="extended"
                     sx={{ top: 16, fontSize: 20 }}
@@ -107,7 +113,7 @@ const DeadDetails = () => {
                     }}
                     title={`بيانات ${person.NameFl}`}
                 />
-                <CardContent sx={{mb: 0, pb: 0}}>
+                <CardContent sx={{ mb: 0, pb: 0 }}>
                     <Grid
                         container
                         my={5}

@@ -23,7 +23,6 @@ const UserSearch = () => {
             dispatch(setUsers(data));
         } catch (err) {
             console.error(err);
-            console.log(err.response.data);
             dispatch(setUsers([]));
         }
     };

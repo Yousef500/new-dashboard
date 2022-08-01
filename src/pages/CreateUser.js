@@ -59,7 +59,6 @@ const CreateUser = () => {
                 companyName: userData.isCompany ? userData.companyName : "",
             });
 
-            console.log(addUserRes);
             navigate("/users");
             toast.success("تم إضافة المستخدم بنجاح");
         } catch (err) {

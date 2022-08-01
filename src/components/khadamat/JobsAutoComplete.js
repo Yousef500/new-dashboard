@@ -6,7 +6,7 @@ import InputField from "./InputField";
 
 const JobsAutoComplete = ({ control, setManagers, job = {}, setValue, ...inputProps }) => {
     const [jobs, setJobs] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const handleJobNameChange = async (e, field = null, val) => {
         if (field) {
@@ -16,11 +16,15 @@ const JobsAutoComplete = ({ control, setManagers, job = {}, setValue, ...inputPr
         let managers;
         switch (val.StringValue) {
             case "مفتش صحى":
-                managers = await usersService.getUsersByJobId("4e6c3eb9-5740-45f9-932c-15b5640b29a9");
+                managers = await usersService.getUsersByJobId(
+                    "4e6c3eb9-5740-45f9-932c-15b5640b29a9"
+                );
                 setManagers(managers.data);
                 break;
             case "حارس أمن":
-                managers = await usersService.getUsersByJobId("62c8b767-b13c-4d2a-a396-1260f7bb9d2e");
+                managers = await usersService.getUsersByJobId(
+                    "62c8b767-b13c-4d2a-a396-1260f7bb9d2e"
+                );
                 setManagers(managers.data);
                 break;
             default:
@@ -34,13 +38,12 @@ const JobsAutoComplete = ({ control, setManagers, job = {}, setValue, ...inputPr
             if (job) {
                 await handleJobNameChange({}, null, job);
             }
-            setLoading(true);
             try {
                 const { data } = await usersService.getJobs();
-                console.log("data", data);
                 setJobs(data);
             } catch (err) {
                 console.log(err);
+                setLoading(false);
             }
             setLoading(false);
         })();

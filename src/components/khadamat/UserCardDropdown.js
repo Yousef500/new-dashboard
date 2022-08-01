@@ -46,7 +46,6 @@ const UserCardDropdown = ({ user, loading, setUserLoading }) => {
             closeMenu();
             // dispatch(setUsersLoading(true));
             const { data } = await usersService.changeStatus({ userId: user.Id, status });
-            console.log("data", data);
             const usersRes = await usersService.searchUsers();
             dispatch(setUsers(usersRes.data));
             toast.success("تمت العملية بنجاح");

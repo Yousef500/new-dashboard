@@ -159,11 +159,6 @@ const UsersPermissions = () => {
         }
     };
 
-    const handleSubmit = () => {
-        console.log({ permissionsToAdd });
-        console.log({ addedPermissions });
-    };
-
     return (
         <Container>
             <Grid container spacing={3} justifyContent="center" alignItems={"center"} my={20}>

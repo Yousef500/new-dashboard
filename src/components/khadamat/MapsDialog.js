@@ -3,8 +3,10 @@ import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
 const MapsDialog = ({ open, onClose, lat, lng }) => {
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: "AIzaSyCOBPIn28RWnezaIUxHC8dOHRSD7QU1FN4",
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+        language: "ar",
     });
+
     return (
         open && (
             <Dialog open={open} onClose={onClose} maxWidth={"xl"}>

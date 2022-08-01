@@ -74,8 +74,6 @@ const tableHeads = [
 ];
 
 const DeadTable = () => {
-    // const [orderBy, setOrderBy] = useState("");
-    // const [sortDirection, setSortDirection] = useState("asc");
     const dispatch = useDispatch();
     const { dead, orderBy, sortBy, deadLoading } = useSelector((state) => state.dead);
 
@@ -85,7 +83,6 @@ const DeadTable = () => {
                 dispatch(setDeadLoading(true));
                 const { data: deadData } = await deadService.searchDead();
                 dispatch(setDead(deadData.PagedList));
-                console.log({ deadData });
             } catch (err) {
                 console.log({ err });
                 dispatch(setDeadLoading(false));
@@ -110,7 +107,6 @@ const DeadTable = () => {
             const { data: sortedDead } = await deadService.searchDead();
 
             dispatch(setDead(sortedDead.PagedList));
-            console.log({ sortedDead });
         } catch (err) {
             console.log({ err });
             setDeadLoading(false);

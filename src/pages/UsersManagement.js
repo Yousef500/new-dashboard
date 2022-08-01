@@ -20,7 +20,6 @@ const UsersManagement = () => {
             try {
                 const { data } = await usersService.searchUsers();
                 dispatch(setUsers(data));
-                console.log({data});
             } catch (err) {
                 console.log(err);
                 dispatch(setUsersLoading(false));
@@ -33,7 +32,6 @@ const UsersManagement = () => {
         try {
             const { data } = await usersService.searchUsers();
             dispatch(setUsers(data));
-            console.log({data});
         } catch (err) {
             console.log(err);
             dispatch(setUsersLoading(false));

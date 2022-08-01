@@ -5,12 +5,16 @@ import session from "redux-persist/lib/storage/session";
 import thunk from "redux-thunk";
 import currentUserReducer from "./slices/currentUserSlice";
 import deadReducer from "./slices/deadSlice";
+import gendersReducer from "./slices/gendersSlice";
+import nationalitiesReducer from "./slices/nationalitiesSlice";
 import usersReducer from "./slices/usersSlice";
 
 const reducers = {
     currentUser: currentUserReducer,
     users: usersReducer,
     dead: deadReducer,
+    nationalities: nationalitiesReducer,
+    genders: gendersReducer,
 };
 
 const persistConfig = {
