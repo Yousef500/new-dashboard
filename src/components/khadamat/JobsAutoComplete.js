@@ -41,16 +41,12 @@ const JobsAutoComplete = ({ control, setManagers, job = {}, setValue, ...inputPr
             try {
                 const { data } = await usersService.getJobs();
                 setJobs(data);
+                setLoading(false);
             } catch (err) {
                 console.log(err);
                 setLoading(false);
             }
-            setLoading(false);
         })();
-        const abortController = new AbortController();
-        return () => {
-            abortController.abort();
-        };
     }, []);
 
     return (

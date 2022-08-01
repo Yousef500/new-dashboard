@@ -6,18 +6,18 @@ import InputField from "./InputField";
 
 const RolesAutoComplete = ({ control }) => {
     const [securityRoles, setSecurityRoles] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
-            setLoading(true);
             try {
                 const { data } = await usersService.getAllUsersRoles();
                 setSecurityRoles(data);
+                setLoading(false);
             } catch (err) {
                 console.log(err);
+                setLoading(false);
             }
-            setLoading(false);
         })();
     }, []);
 

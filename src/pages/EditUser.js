@@ -34,7 +34,7 @@ const EditUser = () => {
     const { id } = useParams();
     const [managers, setManagers] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [defaultsLoading, setDefaultsLoading] = useState(false);
+    const [defaultsLoading, setDefaultsLoading] = useState(true);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -55,7 +55,6 @@ const EditUser = () => {
 
     useEffect(() => {
         (async () => {
-            setDefaultsLoading(true);
             try {
                 dispatch(setUsersPageNo(1));
                 dispatch(setUsersFilterBy(""));

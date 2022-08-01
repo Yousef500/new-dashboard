@@ -3,6 +3,7 @@ import { persistStore } from "redux-persist";
 import persistCombineReducers from "redux-persist/es/persistCombineReducers";
 import session from "redux-persist/lib/storage/session";
 import thunk from "redux-thunk";
+import cemeteriesReducer from "./slices/cemeteriesSlice";
 import currentUserReducer from "./slices/currentUserSlice";
 import deadReducer from "./slices/deadSlice";
 import gendersReducer from "./slices/gendersSlice";
@@ -15,6 +16,7 @@ const reducers = {
     dead: deadReducer,
     nationalities: nationalitiesReducer,
     genders: gendersReducer,
+    cemeteries: cemeteriesReducer,
 };
 
 const persistConfig = {

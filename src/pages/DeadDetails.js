@@ -139,12 +139,12 @@ const DeadDetails = () => {
                                 data={person.IsDeleted ? "نعم" : "لا"}
                             />
                             <DeadDetailsData
-                                title="مقيم:"
+                                title="مواطن:"
                                 data={
                                     <Chip
                                         label={person.IsCitizen ? "نعم" : "لا"}
                                         // color={person.IsCitizen ? "info" : "default"}
-                                        color={"info"}
+                                        color={"success"}
                                         disabled={!person.IsCitizen}
                                         sx={{ width: 60, fontSize: 21 }}
                                     />
@@ -168,7 +168,7 @@ const DeadDetails = () => {
                                     <Chip
                                         label={person.IsActive ? "نعم" : "لا"}
                                         // color={person.IsActive ? "success" : "default"}
-                                        color={"success"}
+                                        color={"info"}
                                         disabled={!person.IsActive}
                                         sx={{
                                             width: 60,

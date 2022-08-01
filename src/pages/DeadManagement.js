@@ -137,7 +137,7 @@ const DeadManagement = () => {
                     <Tooltip title="حذف التصفية">
                         <Fab
                             variant="extended"
-                            sx={{ fontSize: 20, position: "absolute", right: 16, top: 3 }}
+                            sx={{ fontSize: 22, position: "absolute", right: 16, top: 3 }}
                             color="secondary"
                             onClick={handleFiltersReset}
                         >

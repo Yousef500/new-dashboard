@@ -12,7 +12,7 @@ nats.interceptors.request.use(
         config.headers.Authorization = `bearer ${authToken}`;
         config.headers["Accept-Language"] = "ar";
         if (config.url.includes("Search")) {
-            const { page, pageSize, filterBy } = state.users;
+            const { page, pageSize, filterBy } = state.nationalities;
             const data = {
                 ...config.data,
                 filterBy,
