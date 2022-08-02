@@ -5,10 +5,8 @@ import {
     SearchOffRounded,
 } from "@mui/icons-material";
 import {
-    Chip,
     CircularProgress,
     Container,
-    Divider,
     Fab,
     Grid,
     Pagination,
@@ -24,6 +22,7 @@ import MDButton from "components/MDButton";
 import deadService from "config/axios/deadServices";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
     deleteDeadFilter,
@@ -113,6 +112,8 @@ const DeadManagement = () => {
                             color="secondary"
                             sx={{ fontSize: 25 }}
                             startIcon={<PlaylistAddOutlined />}
+                            component={Link}
+                            to={`/dead/add?page=${page}`}
                         >
                             إضافة سجل
                         </MDButton>

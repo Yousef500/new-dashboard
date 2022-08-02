@@ -21,7 +21,7 @@ import {
     Typography
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import MDButton from "components/MDButton";
 import deadService from "config/axios/deadServices";
 import nationalitiesService from "config/axios/nationalitiesService";

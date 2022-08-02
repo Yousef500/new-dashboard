@@ -63,6 +63,7 @@ import UsersPermissions from "pages/UsersPermissions";
 import DeadManagement from "pages/DeadManagement";
 import DeadDetails from "pages/DeadDetails";
 import EditDead from "pages/EditDead";
+import AddDead from "pages/AddDead";
 
 export default function App() {
     const [controller, dispatch] = useMaterialUIController();
@@ -189,6 +190,7 @@ export default function App() {
                                 <Route path="/dead/management" element={<DeadManagement />} />
                                 <Route path="/dead/:id" element={<DeadDetails />} />
                                 <Route path="/dead/edit/:id" element={<EditDead />} />
+                                <Route path="/dead/add" element={<AddDead />} />
                                 <Route path="/users/management" element={<UsersManagement />} />
                                 <Route path="/users/permissions" element={<UsersPermissions />} />
                                 <Route path="/users/create" element={<CreateUser />} />

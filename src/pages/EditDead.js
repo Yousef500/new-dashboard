@@ -1,4 +1,4 @@
-import { CancelOutlined, SaveRounded } from "@mui/icons-material";
+import { CancelOutlined, CheckRounded, SaveRounded, UploadFileRounded } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
     Checkbox,
@@ -23,20 +23,27 @@ import MonthsInput from "components/khadamat/MonthsInput";
 import NationalityInput from "components/khadamat/NationalityInput";
 import MDButton from "components/MDButton";
 import deadService from "config/axios/deadServices";
+import filesService from "config/axios/filesService";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { resetDeadFilter, setDeadPageNo } from "redux/slices/deadSlice";
+import shortUUID from "short-uuid";
 
 const EditDead = () => {
     const { id } = useParams();
+    const page = useLocation().search.split("page=")[1];
     const [loadingData, setLoadingData] = useState(true);
-    const { saving, setSaving } = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [uploaded, setUploaded] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [file, setFile] = useState();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const days = Array.from(Array(30).keys());
     const {
         register,
         control,
@@ -53,7 +60,6 @@ const EditDead = () => {
                 dispatch(setDeadPageNo(1));
                 dispatch(resetDeadFilter());
                 const { data: searchResults } = await deadService.searchDead({ id });
-                console.log({ searchResults });
                 const defaults = searchResults.PagedList[0];
                 reset({
                     ...defaults,
@@ -82,8 +88,60 @@ const EditDead = () => {
         })();
     }, []);
 
-    const handleEditDead = (data) => {
-        console.log(data);
+    const handleGoBack = () => {
+        dispatch(setDeadPageNo(Number(page)));
+        navigate("/dead/management");
+    };
+
+    const handleEditDead = async (data) => {
+        setSaving(true);
+        try {
+            const fileName = shortUUID.generate();
+            if (file?.length) {
+                const formData = new FormData();
+                formData.append("files", file[0], `${fileName}.pdf`);
+                const { data: fileData } = await filesService.upload({
+                    files: [...formData.values()],
+                    Module: "HDs",
+                    Folder: id,
+                });
+
+                const { data: updatedPerson } = await deadService.editDead({
+                    id,
+                    nameFl: data.NameFl,
+                    nameSl: data.NameSl,
+                    nationalNumber: data.NationalNumber,
+                    isCitizen: data.IsCitizen,
+                    ageDays: data.days.value,
+                    ageMonths: data.months.value,
+                    ageYears: data.AgeYears,
+                    dateOfDeath: new Date(data.DateOfDeath).toISOString(),
+                    deathTime: dayjs(data.DeathTime).format("HH:mm:ss"),
+                    registrationNumber: data.RegistrationNumber,
+                    columnNumber: data.ColumnNumber,
+                    rowNumber: data.RowNumber,
+                    squareNumber: data.SquareNumber,
+                    deathReason: data.DeathReason,
+                    filePath: `HDs/${id}/${fileName}.pdf`,
+                    fileSize: fileData.ExtraData.UploadedFilesSize,
+                    hDsLookupGenderTypeId: data.gender.Key,
+                    gTsLookupNationaltyId: data.nationality.Key,
+                    hDsLookupCemeteryId: data.cemetery.Key,
+                    locationLong: 0,
+                    locationLat: 0,
+                });
+
+                handleGoBack();
+
+                toast.info("تم تعديل البيانات بنجاح");
+            }
+        } catch (err) {
+            console.log({ err });
+            toast.error(err.response?.data?.Message ?? "لقد حدث خطأ ما");
+            setSaving(false);
+        }
+
+        setSaving(false);
     };
 
     return (
@@ -145,9 +203,16 @@ const EditDead = () => {
                     <Grid item xs={12} md={6}>
                         <InputField
                             fullWidth
-                            {...register("NationalNumber")}
+                            {...register("NationalNumber", {
+                                maxLength: {
+                                    message: "لا يمكن ان يتجاوز رقم الهوية 10 أرقام",
+                                    value: 10,
+                                },
+                            })}
                             type="text"
                             label="رقم الهوية"
+                            error={!!errors.NationalNumber}
+                            helperText={errors.NationalNumber?.message}
                         />
                     </Grid>
 
@@ -158,7 +223,15 @@ const EditDead = () => {
                                     مواطن ؟
                                 </Typography>
                             }
-                            control={<Checkbox {...register("IsCitizen")} />}
+                            control={
+                                <Controller
+                                    render={({ field }) => (
+                                        <Checkbox {...field} checked={field.value} />
+                                    )}
+                                    name="IsCitizen"
+                                    control={control}
+                                />
+                            }
                         />
                     </Grid>
 
@@ -166,7 +239,7 @@ const EditDead = () => {
                         <InputField
                             fullWidth
                             {...register("RegistrationNumber")}
-                            type="number"
+                            type="string"
                             label="رقم التسجيل"
                         />
                     </Grid>
@@ -236,6 +309,48 @@ const EditDead = () => {
                             rules={{ required: true }}
                         />
                     </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                        <MDButton
+                            startIcon={
+                                !uploaded ? (
+                                    uploading ? (
+                                        <CircularProgress />
+                                    ) : (
+                                        <UploadFileRounded />
+                                    )
+                                ) : (
+                                    <CheckRounded />
+                                )
+                            }
+                            variant="gradient"
+                            color={uploaded ? "success" : "secondary"}
+                            component="label"
+                            size="large"
+                            sx={{ fontSize: 20 }}
+                        >
+                            {uploaded ? "تم تجهيز الملف" : "رفع شهادة وفاة"}
+                            <input
+                                onChange={(e) => {
+                                    setUploaded(false);
+                                    setUploading(true);
+                                    setFile(e.target.files);
+                                    setUploading(false);
+                                    setUploaded(true);
+                                }}
+                                hidden
+                                type="file"
+                            />
+                        </MDButton>
+                    </Grid>
+
+                    {file?.length ? (
+                        <Grid item xs={12} sm={6}>
+                            {file[0].name}
+                        </Grid>
+                    ) : (
+                        ""
+                    )}
 
                     <Grid item xs={12}>
                         <Divider sx={{ background: "black" }} />
@@ -327,6 +442,7 @@ const EditDead = () => {
                                 color="error"
                                 sx={{ fontSize: 18 }}
                                 startIcon={<CancelOutlined />}
+                                onClick={handleGoBack}
                             >
                                 إلغاء
                             </MDButton>

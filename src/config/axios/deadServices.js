@@ -32,6 +32,8 @@ dead.interceptors.request.use(
 
 const deadService = {
     searchDead: (data) => dead.post("/HonorTheDead/Search", data),
+    editDead: (data) => dead.post("/HonorTheDead/Edit", data),
+    addDead: (data) => dead.post("/HonorTheDead/Add", data),
 };
 
 export default deadService;

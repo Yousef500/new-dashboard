@@ -15,6 +15,7 @@ import {
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import Center from "components/khadamat/Center";
 import DeadDetailsData from "components/khadamat/DeadDetailsData";
+import ViewDate from "components/khadamat/ViewDate";
 import deadService from "config/axios/deadServices";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -130,7 +131,7 @@ const DeadDetails = () => {
                             <DeadDetailsData title="النوع:" data={person.GenderTypeName} />
                             <DeadDetailsData
                                 title="تاريخ الوفاة:"
-                                data={person.DateOfDeath.split("T")[0]}
+                                data={<ViewDate date={person.DateOfDeath} />}
                             />
                             <DeadDetailsData title="زمن الوفاة:" data={person.DeathTime} />
                             <DeadDetailsData title="سبب الوفاة:" data={person.DeathReason} />
