@@ -64,6 +64,8 @@ import DeadManagement from "pages/DeadManagement";
 import DeadDetails from "pages/DeadDetails";
 import EditDead from "pages/EditDead";
 import AddDead from "pages/AddDead";
+import SidenavToggle from "components/khadamat/SidenavToggle";
+import UsersDashboard from "pages/UsersDashboard";
 
 export default function App() {
     const [controller, dispatch] = useMaterialUIController();
@@ -129,7 +131,7 @@ export default function App() {
             }
 
             if (route.route) {
-                return <Route exact path={route.route} element={route.component} key={route.key} />;
+                return <Route path={route.route} element={route.component} key={route.key} />;
             }
 
             return null;
@@ -186,15 +188,20 @@ export default function App() {
                         {layout === "vr" && <Configurator />}
                         <Routes>
                             <Route element={<ProtectedRoute allowed={!!userInfo?.Token} />}>
-                                {getRoutes(routes)}
-                                <Route path="/dead/management" element={<DeadManagement />} />
-                                <Route path="/dead/:id" element={<DeadDetails />} />
-                                <Route path="/dead/edit/:id" element={<EditDead />} />
-                                <Route path="/dead/add" element={<AddDead />} />
-                                <Route path="/users/management" element={<UsersManagement />} />
-                                <Route path="/users/permissions" element={<UsersPermissions />} />
-                                <Route path="/users/create" element={<CreateUser />} />
-                                <Route path="/users/edit/:id" element={<EditUser />} />
+                                <Route path="/" element={<SidenavToggle />}>
+                                    {getRoutes(routes)}
+                                    <Route path="dead/management" element={<DeadManagement />} />
+                                    <Route path="dead/:id" element={<DeadDetails />} />
+                                    <Route path="dead/edit/:id" element={<EditDead />} />
+                                    <Route path="dead/add" element={<AddDead />} />
+                                    <Route path="users/management" element={<UsersManagement />} />
+                                    <Route
+                                        path="users/permissions"
+                                        element={<UsersPermissions />}
+                                    />
+                                    <Route path="users/create" element={<CreateUser />} />
+                                    <Route path="users/edit/:id" element={<EditUser />} />
+                                </Route>
                             </Route>
                             <Route path="/sign-in" element={<SignIn />} />
                             <Route path="*" element={<Navigate to="/sign-in" />} />
@@ -224,8 +231,20 @@ export default function App() {
                     )}
                     {layout === "vr" && <Configurator />}
                     <Routes>
-                        {getRoutes(routes)}
-                        <Route path="*" element={<Navigate to="/dashboard" />} />
+                        {/* {getRoutes(routes)} */}
+                        <Route element={<ProtectedRoute allowed={!!userInfo?.Token} />}>
+                            {getRoutes(routes)}
+                            <Route path="/dead/management" element={<DeadManagement />} />
+                            <Route path="/dead/:id" element={<DeadDetails />} />
+                            <Route path="/dead/edit/:id" element={<EditDead />} />
+                            <Route path="/dead/add" element={<AddDead />} />
+                            <Route path="/users/management" element={<UsersManagement />} />
+                            <Route path="/users/permissions" element={<UsersPermissions />} />
+                            <Route path="/users/create" element={<CreateUser />} />
+                            <Route path="/users/edit/:id" element={<EditUser />} />
+                        </Route>
+                        <Route path="/sign-in" element={<SignIn />} />
+                        <Route path="*" element={<Navigate to="/sign-in" />} />
                     </Routes>
                 </ThemeProvider>
             )}

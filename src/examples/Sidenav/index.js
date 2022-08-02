@@ -46,6 +46,8 @@ import {
     setTransparentSidenav,
     setWhiteSidenav,
 } from "context";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpen } from "redux/slices/sidenavSlice";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
     const [controller, dispatch] = useMaterialUIController();
@@ -140,20 +142,28 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         return returnValue;
     });
 
+    const { open } = useSelector((state) => state.sidenav);
+    const dispatchOpen = useDispatch();
+
     return (
         <SidenavRoot
             {...rest}
-            variant="permanent"
+            // variant="permanent"
+            variant={"temporary"}
+            open={open}
+            onClose={() => dispatchOpen(setOpen(false))}
             ownerState={{ transparentSidenav, whiteSidenav, miniSidenav, darkMode }}
         >
             <MDBox pt={3} pb={1} px={4} textAlign="center">
                 <MDBox
-                    display={{ xs: "block", xl: "none" }}
+                    // display={{ xs: "block", xl: "block" }}
+                    display={"block"}
                     position="absolute"
                     top={0}
                     right={0}
                     p={1.625}
-                    onClick={closeSidenav}
+                    // onClick={closeSidenav}
+                    onClick={() => dispatchOpen(setOpen(false))}
                     sx={{ cursor: "pointer" }}
                 >
                     <MDTypography variant="h6" color="secondary">

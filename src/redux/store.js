@@ -8,9 +8,11 @@ import currentUserReducer from "./slices/currentUserSlice";
 import deadReducer from "./slices/deadSlice";
 import gendersReducer from "./slices/gendersSlice";
 import nationalitiesReducer from "./slices/nationalitiesSlice";
+import sidenavReducer from "./slices/sidenavSlice";
 import usersReducer from "./slices/usersSlice";
 
 const reducers = {
+    sidenav: sidenavReducer,
     currentUser: currentUserReducer,
     users: usersReducer,
     dead: deadReducer,

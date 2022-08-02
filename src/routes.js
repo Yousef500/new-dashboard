@@ -63,7 +63,7 @@ const routes = [
         name: "الحماية والمستخدمين",
         key: "usersDashboard",
         icon: <PeopleAltRounded />,
-        route: "/users",
+        route: "users",
         component: <UsersDashboard />,
     },
     {
@@ -71,7 +71,7 @@ const routes = [
         name: "إكرام",
         key: "deadDashboard",
         icon: <DashboardCustomizeRounded />,
-        route: "/dead",
+        route: "dead",
         component: <DeadDashboard />,
     },
     {
